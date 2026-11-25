@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Questions · Vaultgate</title>
+<meta name="description" content="Common questions about Vaultgate.">
+<meta property="og:title" content="Questions · Vaultgate">
+<meta property="og:description" content="Common questions about Vaultgate.">
+<meta property="og:url" content="https://cnova.in/faq.html">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://cnova.in/faq.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f766e'/%3E%3Cpath d='M16 6l8 3v6c0 5-3.4 9.3-8 11-4.6-1.7-8-6-8-11V9z' fill='white'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css?v=10b3aca6d0">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="./" aria-label="Vaultgate home"><span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l8 3v6c0 5.2-3.4 9.9-8 11-4.6-1.1-8-5.8-8-11V5z"/></svg></span><span class="brand-text">Vaultgate<small>by Cnova</small></span></a>
+  <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
+  <nav class="links" id="nav" aria-label="Pages"><a href="./">Overview</a><a href="features.html">Features</a><a href="workflow.html">Workflow</a><a href="platforms.html">Platforms</a><a href="security.html">Security</a><a href="deployment.html">Deployment</a><a href="faq.html" aria-current="page">FAQ</a><a class="nav-cta" href="contact.html">Request a trial</a></nav>
+  <a class="btn primary small cta-top" href="contact.html">Request a trial</a>
+</header>
+<main>
+<section class="head">
+  <div class="orb orb-a" aria-hidden="true"></div>
+  <p class="eyebrow">FAQ</p>
+  <h1>Common questions</h1>
+  <p class="lead">Can't find your answer? <a href="contact.html" style="color:#2dd4bf">Ask us</a>.</p>
+</section>
+
+<section class="band">
+  <div class="wrap faq">
+    <details open><summary>What is privileged access management?</summary>
+      <p>Privileged accounts, such as root, Administrator, database owners and device admins, can change anything on a system. Privileged access management keeps their passwords in a vault, changes them regularly, controls who may use them, and records what is done with them.</p></details>
+    <details><summary>Does Vaultgate run in the cloud?</summary>
+      <p>No. Vaultgate is self-hosted: you install it on your own VM or server, and your passwords and recordings never leave your network. The only outbound call it needs is a daily license check-in, and it keeps working for 30 days without one.</p></details>
+    <details><summary>Do users need to install anything?</summary>
+      <p>No. SSH, RDP, VNC and published applications open in a normal web browser. People who prefer their own tools can use any SSH client, <code>scp</code> or <code>sftp</code> through the SSH gateway.</p></details>
+    <details><summary>Do users ever see the passwords?</summary>
+      <p>Not in brokered sessions: Vaultgate signs in for them. If a policy allows someone to reveal a password, the reveal is audited, and the password can change automatically when they check it back in.</p></details>
+    <details><summary>Do I need to know the current passwords to onboard accounts?</summary>
+      <p>No. With a control account on the server or in the domain, Vaultgate sets a fresh password for each account as it is imported, so the old one stops mattering.</p></details>
+    <details><summary>What happens if the Vaultgate appliance goes down?</summary>
+      <p>With failover, a standby takes over the virtual address in about 45 seconds. Without it, the recovery kit gives chosen administrators access to emergency accounts from an encrypted file that opens offline.</p></details>
+    <details><summary>Can it work with Active Directory and single sign-on?</summary>
+      <p>Yes. Add any number of AD or LDAP domains and OpenID Connect providers. Users sign in with their usual accounts, their role comes from their groups, and leavers are disabled at the next sync.</p></details>
+    <details><summary>Can our scripts and tools get passwords from it?</summary>
+      <p>Yes, through the Credential API. Each application gets its own key, allowed addresses and allowed accounts, and every fetch is audited.</p></details>
+    <details><summary>Is it possible to tamper with the recordings or logs?</summary>
+      <p>Each recording's hash is sealed into an HMAC-chained audit trail, so any change shows up when the recording is replayed or the chain is checked. For an off-box copy, send the audit log to your SIEM as well.</p></details>
+    <details><summary>What do I need to run it?</summary>
+      <p>A VM or server with at least 2 vCPU, 4 GB of memory and 40 GB of disk, on VMware, Hyper-V, Proxmox, KVM, Nutanix AHV or bare metal. See <a href="deployment.html">Deployment</a>.</p></details>
+    <details><summary>Is there a trial?</summary>
+      <p>Yes, every new installation starts with a 30-day trial. <a href="contact.html">Request the installer</a>.</p></details>
+  </div>
+</section>
+</main>
+<footer class="foot">
+  <div class="foot-brand"><span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l8 3v6c0 5.2-3.4 9.9-8 11-4.6-1.1-8-5.8-8-11V5z"/></svg></span><span>Vaultgate<small>Self-hosted privileged access by Cnova</small></span></div>
+  <nav aria-label="Footer"><a href="./">Overview</a> · <a href="features.html">Features</a> · <a href="workflow.html">Workflow</a> · <a href="platforms.html">Platforms</a> · <a href="security.html">Security</a> · <a href="deployment.html">Deployment</a> · <a href="faq.html">FAQ</a> · <a href="contact.html">Contact</a></nav>
+  <span class="copy">© 2026 Cnova</span>
+</footer>
+<script src="site.js?v=e69eeee86c" defer></script>
+</body>
+</html>

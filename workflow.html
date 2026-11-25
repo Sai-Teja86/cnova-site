@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How it works · Vaultgate</title>
+<meta name="description" content="Step by step: how users reach a server, how access is approved, how passwords rotate, and how accounts are onboarded.">
+<meta property="og:title" content="How it works · Vaultgate">
+<meta property="og:description" content="Step by step: how users reach a server, how access is approved, how passwords rotate, and how accounts are onboarded.">
+<meta property="og:url" content="https://cnova.in/workflow.html">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://cnova.in/workflow.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f766e'/%3E%3Cpath d='M16 6l8 3v6c0 5-3.4 9.3-8 11-4.6-1.7-8-6-8-11V9z' fill='white'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css?v=10b3aca6d0">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="./" aria-label="Vaultgate home"><span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l8 3v6c0 5.2-3.4 9.9-8 11-4.6-1.1-8-5.8-8-11V5z"/></svg></span><span class="brand-text">Vaultgate<small>by Cnova</small></span></a>
+  <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
+  <nav class="links" id="nav" aria-label="Pages"><a href="./">Overview</a><a href="features.html">Features</a><a href="workflow.html" aria-current="page">Workflow</a><a href="platforms.html">Platforms</a><a href="security.html">Security</a><a href="deployment.html">Deployment</a><a href="faq.html">FAQ</a><a class="nav-cta" href="contact.html">Request a trial</a></nav>
+  <a class="btn primary small cta-top" href="contact.html">Request a trial</a>
+</header>
+<main>
+<section class="head">
+  <div class="orb orb-a" aria-hidden="true"></div>
+  <p class="eyebrow">Workflow</p>
+  <h1>How Vaultgate works, step by step</h1>
+  <p class="lead">The everyday journeys for users, approvers, administrators and applications.</p>
+  <nav class="toc" aria-label="Workflows">
+    <a href="#session">Opening a session</a><a href="#jit">Requesting access</a><a href="#rotate">Password rotation</a>
+    <a href="#checkout">Checkout</a><a href="#onboard">Onboarding</a><a href="#api">Application access</a><a href="#review">Review and audit</a>
+  </nav>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <div class="flow" aria-label="User to Vaultgate to target">
+      <div class="node">User<small>browser or ssh client</small></div>
+      <div class="arrow"></div>
+      <div class="node strong">Vaultgate<small>policy · vault · recorder</small></div>
+      <div class="arrow"></div>
+      <div class="node">Target<small>server · database · device</small></div>
+    </div>
+  </div>
+</section>
+
+<section class="band alt">
+  <div class="wrap flowlist">
+
+    <article class="wf" id="session">
+      <h2>1. Opening a session</h2>
+      <p>An engineer needs to work on a server. They never see its password.</p>
+      <ol class="steps">
+        <li><b>Sign in</b><span>With their directory account or single sign-on, plus a second factor.</span></li>
+        <li><b>Pick a target</b><span>My Access lists only what policies allow them, right now.</span></li>
+        <li><b>Policy check</b><span>Vaultgate checks the user, the time window and any approval again at connect time.</span></li>
+        <li><b>Gateway signs in</b><span>The password comes from the vault and goes straight to the server, not to the browser.</span></li>
+        <li><b>Work, recorded</b><span>Commands are checked against the blocklist; everything is recorded.</span></li>
+        <li><b>Session ends</b><span>The recording is sealed into the audit trail. The password can rotate now.</span></li>
+      </ol>
+    </article>
+
+    <article class="wf" id="jit">
+      <h2>2. Requesting access just in time</h2>
+      <p>For sensitive systems, nobody has standing access. They ask, someone approves, and it ends on its own.</p>
+      <ol class="steps">
+        <li><b>Request</b><span>The user asks for a target, with a reason and how long they need.</span></li>
+        <li><b>Approve</b><span>An approver sees the request and approves or refuses it. Nobody approves their own.</span></li>
+        <li><b>Use</b><span>The user connects as usual, within the approved time.</span></li>
+        <li><b>Expire</b><span>Access ends at the set time. Revoking it early ends any live session.</span></li>
+      </ol>
+    </article>
+
+    <article class="wf" id="rotate">
+      <h2>3. Password rotation</h2>
+      <p>Every password changes on schedule, and Vaultgate proves the new one works.</p>
+      <ol class="steps">
+        <li><b>Trigger</b><span>The rotation policy's schedule, the end of a session, a check-in, or an administrator.</span></li>
+        <li><b>Generate</b><span>A new password that follows the policy's length and character rules.</span></li>
+        <li><b>Change</b><span>Using the system's own command, by the account itself or through a control account.</span></li>
+        <li><b>Verify</b><span>Vaultgate signs in with the new password.</span></li>
+        <li><b>Store</b><span>The new version is saved and the change is written to the audit trail.</span></li>
+      </ol>
+    </article>
+
+    <article class="wf" id="checkout">
+      <h2>4. Checking out a password</h2>
+      <p>When someone really needs to type a password themselves, for example on a console with no network.</p>
+      <ol class="steps">
+        <li><b>Check out</b><span>With a reason. The account is locked to that person.</span></li>
+        <li><b>Use</b><span>The password is shown once and the reveal is audited.</span></li>
+        <li><b>Check in</b><span>By the user, or automatically when time runs out.</span></li>
+        <li><b>Rotate</b><span>Optionally, the password changes on check-in, so the copy they saw is useless.</span></li>
+      </ol>
+    </article>
+
+    <article class="wf" id="onboard">
+      <h2>5. Onboarding servers and accounts</h2>
+      <p>How an administrator brings systems under management.</p>
+      <ol class="steps">
+        <li><b>Add servers</b><span>One by one, from a CSV file, or found in Active Directory.</span></li>
+        <li><b>Add accounts</b><span>Typed in, imported, or discovered by group, OU or on the server itself.</span></li>
+        <li><b>Set a control account</b><span>An administrator login on the server, kept for rotation only.</span></li>
+        <li><b>Rotate on import</b><span>Each account gets a fresh password, so nobody needs the current one.</span></li>
+        <li><b>Test</b><span>The connection test checks every port and sign-in in one click.</span></li>
+        <li><b>Grant</b><span>Write policies for who may use what, and when.</span></li>
+      </ol>
+    </article>
+
+    <article class="wf" id="api">
+      <h2>6. Applications fetching passwords</h2>
+      <p>Scanners, CI pipelines and scripts get the current password when they run, instead of keeping their own copy.</p>
+      <ol class="steps">
+        <li><b>Register</b><span>The administrator creates an API client with its key, allowed addresses and accounts.</span></li>
+        <li><b>Request</b><span>The application calls the Credential API over HTTPS with its key.</span></li>
+        <li><b>Check</b><span>Key, source address, allowed account, rate limit and reason are all checked.</span></li>
+        <li><b>Deliver</b><span>The current password is returned and the fetch is audited.</span></li>
+      </ol>
+    </article>
+
+    <article class="wf" id="review">
+      <h2>7. Review and audit</h2>
+      <p>What auditors and security teams do with the evidence.</p>
+      <ol class="steps">
+        <li><b>Watch live</b><span>Join any running session read-only, and end it if needed.</span></li>
+        <li><b>Search</b><span>Find a command or typed line across all recordings.</span></li>
+        <li><b>Replay</b><span>Open the recording; its integrity is checked against the sealed hash.</span></li>
+        <li><b>Verify the log</b><span>Check the audit trail's chain for tampering in one click.</span></li>
+        <li><b>Report</b><span>Export CSV, or produce the PDF management report.</span></li>
+      </ol>
+    </article>
+
+  </div>
+</section>
+
+<section class="closing">
+  <h2>Try these workflows on your systems</h2>
+  <p>A trial appliance takes about an afternoon to set up.</p>
+  <a class="btn primary" href="contact.html">Request a trial</a>
+</section>
+</main>
+<footer class="foot">
+  <div class="foot-brand"><span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l8 3v6c0 5.2-3.4 9.9-8 11-4.6-1.1-8-5.8-8-11V5z"/></svg></span><span>Vaultgate<small>Self-hosted privileged access by Cnova</small></span></div>
+  <nav aria-label="Footer"><a href="./">Overview</a> · <a href="features.html">Features</a> · <a href="workflow.html">Workflow</a> · <a href="platforms.html">Platforms</a> · <a href="security.html">Security</a> · <a href="deployment.html">Deployment</a> · <a href="faq.html">FAQ</a> · <a href="contact.html">Contact</a></nav>
+  <span class="copy">© 2026 Cnova</span>
+</footer>
+<script src="site.js?v=e69eeee86c" defer></script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Features and specifications · Vaultgate</title>
+<meta name="description" content="Every Vaultgate capability in detail: vault, rotation, brokered sessions, recording, policies, identity, discovery, the Credential API, reports and high availability.">
+<meta property="og:title" content="Features and specifications · Vaultgate">
+<meta property="og:description" content="Every Vaultgate capability in detail: vault, rotation, brokered sessions, recording, policies, identity, discovery, the Credential API, reports and high availability.">
+<meta property="og:url" content="https://cnova.in/features.html">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://cnova.in/features.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f766e'/%3E%3Cpath d='M16 6l8 3v6c0 5-3.4 9.3-8 11-4.6-1.7-8-6-8-11V9z' fill='white'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css?v=10b3aca6d0">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="./" aria-label="Vaultgate home"><span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l8 3v6c0 5.2-3.4 9.9-8 11-4.6-1.1-8-5.8-8-11V5z"/></svg></span><span class="brand-text">Vaultgate<small>by Cnova</small></span></a>
+  <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
+  <nav class="links" id="nav" aria-label="Pages"><a href="./">Overview</a><a href="features.html" aria-current="page">Features</a><a href="workflow.html">Workflow</a><a href="platforms.html">Platforms</a><a href="security.html">Security</a><a href="deployment.html">Deployment</a><a href="faq.html">FAQ</a><a class="nav-cta" href="contact.html">Request a trial</a></nav>
+  <a class="btn primary small cta-top" href="contact.html">Request a trial</a>
+</header>
+<main>
+<section class="head">
+  <div class="orb orb-a" aria-hidden="true"></div>
+  <p class="eyebrow">Features and specifications</p>
+  <h1>Everything Vaultgate does</h1>
+  <p class="lead">A complete privileged access platform in one appliance. Jump to an area:</p>
+  <nav class="toc" aria-label="Feature areas">
+    <a href="#vault">Vault</a><a href="#rotation">Rotation</a><a href="#sessions">Sessions</a><a href="#control">Session control</a>
+    <a href="#audit">Recording and audit</a><a href="#policies">Policies</a><a href="#identity">Identity</a>
+    <a href="#onboarding">Discovery</a><a href="#api">Credential API</a><a href="#apps">Applications</a><a href="#operations">Operations</a>
+  </nav>
+</section>
+
+<section class="band">
+  <div class="wrap">
+
+    <div class="feature" id="vault">
+      <div><span class="tag">Vault</span><h2>Credential vault and checkout</h2><p class="intro">One encrypted home for every privileged password and key.</p></div>
+      <ul class="ticks">
+        <li>AES-256-GCM envelope encryption: a separate key for every secret, wrapped by the appliance's master key</li>
+        <li>Each secret is bound to its own record, so it can't be copied onto another account</li>
+        <li>Every password version is kept, with who changed it and when</li>
+        <li>Checkout with a reason and a time limit, and an exclusive lock so two people don't use one account</li>
+        <li>Automatic check-in when the time runs out, with optional rotation on check-in</li>
+        <li>Linked accounts: one domain account used on many servers, rotated once for all of them</li>
+        <li>Control accounts: the administrator logins used for rotation are kept apart from users and seen by administrators only</li>
+        <li>SSH keys as well as passwords</li>
+      </ul>
+    </div>
+
+    <div class="feature" id="rotation">
+      <div><span class="tag">Rotation</span><h2>Automatic password rotation</h2><p class="intro">Passwords change by themselves and are checked every time.</p></div>
+      <ul class="ticks">
+        <li>Named rotation policies: schedule, length, symbols and characters to avoid</li>
+        <li>Rotate after each use, for one-time passwords</li>
+        <li>Changed by the account itself, or by a control account for accounts whose password nobody knows</li>
+        <li>Each new password is checked by signing in before the old one is dropped</li>
+        <li>Linux and Unix, Windows local and domain accounts, 9 database engines, Cisco IOS and FortiGate</li>
+        <li>Custom platforms: write the commands for any SSH device as send and expect steps</li>
+        <li>On-demand rotation, and failures shown with the reason</li>
+        <li><a href="platforms.html">Full list of supported systems →</a></li>
+      </ul>
+    </div>
+
+    <div class="feature" id="sessions">
+      <div><span class="tag">Remote access</span><h2>Brokered sessions</h2><p class="intro">Users connect without ever receiving the password.</p></div>
+      <ul class="ticks">
+        <li>SSH in the browser, with the password or key injected by the gateway</li>
+        <li>RDP and VNC desktops in the browser, with nothing to install</li>
+        <li>Native SSH gateway: <code>ssh</code>, <code>scp</code>, <code>sftp</code> and <code>rsync</code> work unchanged</li>
+        <li>Pick a target from a menu, or go straight to it: <code>ssh alice+root@web-01@vaultgate</code></li>
+        <li>Target host keys pinned on first use; a changed key blocks the connection</li>
+        <li>RDP certificate validation on by default</li>
+        <li>Maximum session length and automatic end of idle sessions</li>
+        <li>Each session opens in its own browser tab</li>
+      </ul>
+    </div>
+
+    <div class="feature" id="control">
+      <div><span class="tag">Session control</span><h2>What users can and can't do</h2><p class="intro">Stop risky actions before they reach the server.</p></div>
+      <ul class="ticks">
+        <li>Command blocklists per policy, checked before the command reaches the server</li>
+        <li>Works for Linux shells and for Windows cmd and PowerShell over SSH, including chained commands</li>
+        <li>Keyword guard for RDP, VNC and applications: blocked words typed in a graphical session are stopped</li>
+        <li>Clipboard allowed or blocked per policy</li>
+        <li>File upload and download as separate permissions, off by default</li>
+        <li>Blocked file types, checked by their real contents, and blocked words inside text, Office and zip files</li>
+        <li>Each transferred file's name, size and SHA-256 logged</li>
+        <li>Printing disabled in remote desktops</li>
+      </ul>
+    </div>
+
+    <div class="feature" id="audit">
+      <div><span class="tag">Evidence</span><h2>Recording, monitoring and audit</h2><p class="intro">See everything, change nothing unnoticed.</p></div>
+      <ul class="ticks">
+        <li>Every SSH, RDP and VNC session recorded and replayed in the browser, with seeking</li>
+        <li>Each recording's SHA-256 sealed into the audit trail and checked on replay</li>
+        <li>Commands and typed lines indexed and searchable across all recordings</li>
+        <li>Watch live sessions read-only; end any session at once</li>
+        <li>HMAC-chained audit trail of every sign-in, decision, reveal, session and change, with one-click integrity check</li>
+        <li>Audit views by category: sign-ins, sessions, credentials, access, identity, configuration</li>
+        <li>CSV export of every view, and a PDF management report with charts and findings</li>
+        <li>Recording compression, retention periods, and disk-space alerts; sessions refused before the disk fills</li>
+      </ul>
+    </div>
+
+    <div class="feature" id="policies">
+      <div><span class="tag">Least privilege</span><h2>Access policies and just-in-time access</h2><p class="intro">Nobody gets anything until a policy says so.</p></div>
+      <ul class="ticks">
+        <li>Deny by default</li>
+        <li>Grant to a user, role or directory group, for an account, a server, a tag or everything</li>
+        <li>Separate rights to open a session and to see a password</li>
+        <li>Day and hour windows, and a maximum session length</li>
+        <li>Access requests with a reason and duration, approved or refused by an approver</li>
+        <li>No self-approval; access ends on time, and revoking it ends live sessions</li>
+        <li>Roles: administrator, approver, auditor and user</li>
+      </ul>
+    </div>
+
+    <div class="feature" id="identity">
+      <div><span class="tag">Identity</span><h2>Sign-in and directories</h2><p class="intro">Use the accounts your people already have.</p></div>
+      <ul class="ticks">
+        <li>Any number of Active Directory and LDAP domains, with guided setup</li>
+        <li>OpenID Connect single sign-on</li>
+        <li>Users created on first sign-in, with their role taken from directory groups each time</li>
+        <li>Directory groups usable directly in policies</li>
+        <li>Regular sync: leavers disabled, group changes followed, sessions that are no longer allowed ended</li>
+        <li>TOTP multi-factor sign-in, which can be required for everyone</li>
+        <li>Argon2id password hashing, lockout after failed attempts, forced change on first sign-in</li>
+      </ul>
+    </div>
+
+    <div class="feature" id="onboarding">
+      <div><span class="tag">Onboarding</span><h2>Discovery and bulk import</h2><p class="intro">Bring hundreds of servers and accounts in at once.</p></div>
+      <ul class="ticks">
+        <li>Find computers in Active Directory and add them as RDP or SSH servers</li>
+        <li>Find privileged and service accounts by group, OU, name or admin flag</li>
+        <li>Discover local accounts on Windows servers</li>
+        <li>CSV import of servers and accounts with a full preview; nothing is saved while any row has an error</li>
+        <li>New accounts get a fresh password straight away, so nobody needs to know the current one</li>
+        <li>Connection test page: port reachability and sign-in for every account, in one click</li>
+      </ul>
+    </div>
+
+    <div class="feature" id="api">
+      <div><span class="tag">Automation</span><h2>Credential API</h2><p class="intro">For scanners, pipelines and scripts.</p></div>
+      <ul class="ticks">
+        <li>Applications fetch a password over HTTPS when they need it, so rotation never breaks them</li>
+        <li>Each application has its own API key (only a hash is stored) and optional expiry</li>
+        <li>Allowed source addresses, and the exact accounts or tags each application may fetch</li>
+        <li>Optional mandatory reason and rate limit</li>
+        <li>Every fetch and refusal audited; repeated failures block the address</li>
+        <li>Control accounts are never handed out through the API</li>
+      </ul>
+    </div>
+
+    <div class="feature" id="apps">
+      <div><span class="tag">Applications</span><h2>Application access (RemoteApp)</h2><p class="intro">Give access to a program, not a whole desktop.</p></div>
+      <ul class="ticks">
+        <li>Published programs on a Windows RDS server open as one window in the browser</li>
+        <li>Examples: SQL Server Management Studio, AD Users and Computers, MMC consoles, browsers</li>
+        <li>A second vaulted login, such as a database account, can be passed into the program</li>
+        <li>One-time launch tokens and certificate-pinned HTTPS to the RDS server</li>
+        <li>Recorded and monitored like any remote desktop session</li>
+      </ul>
+    </div>
+
+    <div class="feature" id="operations">
+      <div><span class="tag">Operations</span><h2>Availability, backup and updates</h2><p class="intro">Built to run unattended.</p></div>
+      <ul class="ticks">
+        <li>Automatic failover: primary, warm standby and a witness, with a virtual address that moves in about 45 seconds</li>
+        <li>Encrypted backups (AES-256-GCM, passphrase-protected), with or without recordings</li>
+        <li>Restore onto a new appliance from the setup wizard</li>
+        <li>Signed update bundles, checked before install; a failed update rolls back by itself</li>
+        <li>Updating a pair updates the standby and witness first</li>
+        <li>Recovery kit: emergency accounts in an encrypted file that opens offline, unlocked by a set number of recovery codes (for example 2 of 3)</li>
+        <li>Appliance console for network, time, license, storage and updates</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<section class="closing">
+  <h2>Want to see it running?</h2>
+  <p>We'll set up a trial appliance with you and walk through these features on your own systems.</p>
+  <a class="btn primary" href="contact.html">Request a trial</a>
+</section>
+</main>
+<footer class="foot">
+  <div class="foot-brand"><span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l8 3v6c0 5.2-3.4 9.9-8 11-4.6-1.1-8-5.8-8-11V5z"/></svg></span><span>Vaultgate<small>Self-hosted privileged access by Cnova</small></span></div>
+  <nav aria-label="Footer"><a href="./">Overview</a> · <a href="features.html">Features</a> · <a href="workflow.html">Workflow</a> · <a href="platforms.html">Platforms</a> · <a href="security.html">Security</a> · <a href="deployment.html">Deployment</a> · <a href="faq.html">FAQ</a> · <a href="contact.html">Contact</a></nav>
+  <span class="copy">© 2026 Cnova</span>
+</footer>
+<script src="site.js?v=e69eeee86c" defer></script>
+</body>
+</html>

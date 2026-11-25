@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Security architecture · Vaultgate</title>
+<meta name="description" content="How Vaultgate protects credentials, sessions, recordings and the audit trail.">
+<meta property="og:title" content="Security architecture · Vaultgate">
+<meta property="og:description" content="How Vaultgate protects credentials, sessions, recordings and the audit trail.">
+<meta property="og:url" content="https://cnova.in/security.html">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://cnova.in/security.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f766e'/%3E%3Cpath d='M16 6l8 3v6c0 5-3.4 9.3-8 11-4.6-1.7-8-6-8-11V9z' fill='white'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css?v=10b3aca6d0">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="./" aria-label="Vaultgate home"><span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l8 3v6c0 5.2-3.4 9.9-8 11-4.6-1.1-8-5.8-8-11V5z"/></svg></span><span class="brand-text">Vaultgate<small>by Cnova</small></span></a>
+  <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
+  <nav class="links" id="nav" aria-label="Pages"><a href="./">Overview</a><a href="features.html">Features</a><a href="workflow.html">Workflow</a><a href="platforms.html">Platforms</a><a href="security.html" aria-current="page">Security</a><a href="deployment.html">Deployment</a><a href="faq.html">FAQ</a><a class="nav-cta" href="contact.html">Request a trial</a></nav>
+  <a class="btn primary small cta-top" href="contact.html">Request a trial</a>
+</header>
+<main>
+<section class="head">
+  <div class="orb orb-a" aria-hidden="true"></div>
+  <p class="eyebrow">Security architecture</p>
+  <h1>How Vaultgate protects the keys to everything</h1>
+  <p class="lead">A privileged access platform holds your most sensitive secrets, so it is built to be hard to break into and easy to check.</p>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <h2>Protecting credentials</h2>
+    <div class="grid two">
+      <div class="card"><div class="ico">🔑</div><h3>Envelope encryption</h3><p>Each credential is sealed with AES-256-GCM under its own data key. Data keys are wrapped by a master key that each appliance generates on first start. A copy of the database alone reveals nothing.</p></div>
+      <div class="card"><div class="ico">🧷</div><h3>Bound to its record</h3><p>Every ciphertext is bound to the record it belongs to, so a secret moved onto another account fails to decrypt.</p></div>
+      <div class="card"><div class="ico">🙈</div><h3>Credential injection</h3><p>In brokered sessions the password goes from the vault to the server through the gateway. It never reaches the user's browser or computer.</p></div>
+      <div class="card"><div class="ico">🛡️</div><h3>Control accounts kept apart</h3><p>Administrator logins used for rotation are visible to administrators only, never offered to users, and never handed out through the API.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band alt">
+  <div class="wrap">
+    <h2>Protecting sessions</h2>
+    <div class="grid two">
+      <div class="card"><h3>Pinned host keys</h3><p>A server's SSH key is pinned on first use. If it changes, connections stop and the event is logged until an administrator checks it, which blocks interception.</p></div>
+      <div class="card"><h3>Certificate checks</h3><p>RDP certificates are validated by default. The RemoteApp launcher talks to Vaultgate over HTTPS pinned to the appliance's certificate.</p></div>
+      <div class="card"><h3>Single-use tickets</h3><p>Browser sessions open with short-lived, single-use tickets, and the policy is checked again at the moment of connection.</p></div>
+      <div class="card"><h3>Read-only monitoring</h3><p>People watching a live session can't type or click into it: their keyboard and mouse input is dropped.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <h2>Protecting the evidence</h2>
+    <div class="grid two">
+      <div class="card"><h3>Chained audit trail</h3><p>Every event is linked to the one before it with HMAC-SHA256. Editing or deleting an entry breaks the chain, and the check is one click. Ship the log to your SIEM as well for off-box copies.</p></div>
+      <div class="card"><h3>Sealed recordings</h3><p>Each recording's SHA-256 is written into the audit trail when the session ends, and checked every time it is replayed.</p></div>
+      <div class="card"><h3>File contents kept out</h3><p>Transferred files are logged by name, size and hash, and their contents are kept out of the recordings.</p></div>
+      <div class="card"><h3>Never run blind</h3><p>If the disk is close to full, new sessions are refused rather than run without a recording.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band alt">
+  <div class="wrap">
+    <h2>Protecting the appliance</h2>
+    <div class="table-wrap">
+      <table>
+        <tbody>
+          <tr><td><b>Sign-in</b></td><td>Argon2id password hashing, TOTP multi-factor (on by default for the first administrator, and can be required for everyone), lockout after failed attempts, token revocation</td></tr>
+          <tr><td><b>Single sign-on</b></td><td>OpenID Connect with PKCE; the ID token's signature, issuer, audience, expiry and nonce are all checked</td></tr>
+          <tr><td><b>Directory</b></td><td>LDAPS or StartTLS with certificate checks; empty passwords refused</td></tr>
+          <tr><td><b>Network</b></td><td>Firewall open only on 443 (web) and 2200 (SSH gateway); the remote-desktop engine listens on loopback only</td></tr>
+          <tr><td><b>Web console</b></td><td>Strict Content-Security-Policy with no inline script, framing denied, no caching of API responses</td></tr>
+          <tr><td><b>Operating system</b></td><td>Debian 12 with a firewall that drops all other traffic; root is locked and the server screen shows a console, not a login prompt</td></tr>
+          <tr><td><b>Unique secrets</b></td><td>Every installation makes its own master key, TLS certificate, SSH host key and database; nothing secret ships on the installer</td></tr>
+          <tr><td><b>Updates</b></td><td>Ed25519-signed bundles, checked before anything is installed</td></tr>
+          <tr><td><b>Backups</b></td><td>AES-256-GCM, with the key derived from your passphrase; the passphrase is never stored</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="closing">
+  <h2>Questions from your security team?</h2>
+  <p>We're happy to go through the design in detail.</p>
+  <a class="btn primary" href="contact.html">Contact us</a>
+</section>
+</main>
+<footer class="foot">
+  <div class="foot-brand"><span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l8 3v6c0 5.2-3.4 9.9-8 11-4.6-1.1-8-5.8-8-11V5z"/></svg></span><span>Vaultgate<small>Self-hosted privileged access by Cnova</small></span></div>
+  <nav aria-label="Footer"><a href="./">Overview</a> · <a href="features.html">Features</a> · <a href="workflow.html">Workflow</a> · <a href="platforms.html">Platforms</a> · <a href="security.html">Security</a> · <a href="deployment.html">Deployment</a> · <a href="faq.html">FAQ</a> · <a href="contact.html">Contact</a></nav>
+  <span class="copy">© 2026 Cnova</span>
+</footer>
+<script src="site.js?v=e69eeee86c" defer></script>
+</body>
+</html>

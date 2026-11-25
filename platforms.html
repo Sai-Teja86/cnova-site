@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Supported systems · Vaultgate</title>
+<meta name="description" content="Servers, databases, network devices and applications that Vaultgate manages and rotates passwords for.">
+<meta property="og:title" content="Supported systems · Vaultgate">
+<meta property="og:description" content="Servers, databases, network devices and applications that Vaultgate manages and rotates passwords for.">
+<meta property="og:url" content="https://cnova.in/platforms.html">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://cnova.in/platforms.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f766e'/%3E%3Cpath d='M16 6l8 3v6c0 5-3.4 9.3-8 11-4.6-1.7-8-6-8-11V9z' fill='white'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css?v=10b3aca6d0">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="./" aria-label="Vaultgate home"><span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l8 3v6c0 5.2-3.4 9.9-8 11-4.6-1.1-8-5.8-8-11V5z"/></svg></span><span class="brand-text">Vaultgate<small>by Cnova</small></span></a>
+  <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
+  <nav class="links" id="nav" aria-label="Pages"><a href="./">Overview</a><a href="features.html">Features</a><a href="workflow.html">Workflow</a><a href="platforms.html" aria-current="page">Platforms</a><a href="security.html">Security</a><a href="deployment.html">Deployment</a><a href="faq.html">FAQ</a><a class="nav-cta" href="contact.html">Request a trial</a></nav>
+  <a class="btn primary small cta-top" href="contact.html">Request a trial</a>
+</header>
+<main>
+<section class="head">
+  <div class="orb orb-a" aria-hidden="true"></div>
+  <p class="eyebrow">Supported systems</p>
+  <h1>What Vaultgate manages</h1>
+  <p class="lead">Sessions for any SSH, RDP or VNC system. Built-in password rotation for the platforms below, and your own platforms through custom command templates.</p>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <h2>Password rotation</h2>
+    <p class="sub">Each platform changes the password with its own command, then Vaultgate signs in with the new password to check it.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Platform</th><th>Type</th><th>How the password is changed</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Linux and Unix</td><td>Server</td><td><code>passwd</code> by the account, or <code>chpasswd</code> through a control account (root, <code>sudo</code>)</td><td><span class="pill ok">Available</span></td></tr>
+          <tr><td>Windows</td><td>Server</td><td>Domain accounts in Active Directory over LDAPS; local accounts on the server over SMB</td><td><span class="pill ok">Available</span></td></tr>
+          <tr><td>Microsoft SQL Server</td><td>Database</td><td><code>ALTER LOGIN</code></td><td><span class="pill ok">Available</span></td></tr>
+          <tr><td>Oracle Database</td><td>Database</td><td><code>ALTER USER … IDENTIFIED BY</code></td><td><span class="pill ok">Available</span></td></tr>
+          <tr><td>MySQL</td><td>Database</td><td><code>ALTER USER</code></td><td><span class="pill ok">Available</span></td></tr>
+          <tr><td>MariaDB</td><td>Database</td><td><code>ALTER USER</code></td><td><span class="pill ok">Available</span></td></tr>
+          <tr><td>PostgreSQL</td><td>Database</td><td><code>ALTER ROLE … PASSWORD</code></td><td><span class="pill ok">Available</span></td></tr>
+          <tr><td>MongoDB</td><td>Database</td><td><code>updateUser</code> on the authentication database</td><td><span class="pill ok">Available</span></td></tr>
+          <tr><td>Redis and Valkey</td><td>Database</td><td><code>ACL SETUSER</code></td><td><span class="pill ok">Available</span></td></tr>
+          <tr><td>Apache Cassandra</td><td>Database</td><td><code>ALTER ROLE … WITH PASSWORD</code></td><td><span class="pill ok">Available</span></td></tr>
+          <tr><td>SAP HANA</td><td>Database</td><td><code>ALTER USER … PASSWORD</code></td><td><span class="pill ok">Available</span></td></tr>
+          <tr><td>Cisco IOS and IOS-XE</td><td>Network</td><td>Through a control account on the device, then saved</td><td><span class="pill ok">Available</span></td></tr>
+          <tr><td>Fortinet FortiGate</td><td>Security</td><td>Through a control account on the device</td><td><span class="pill ok">Available</span></td></tr>
+          <tr><td>Your own SSH devices</td><td>Any</td><td>Custom platform: commands written as send and expect steps</td><td><span class="pill ok">Available</span></td></tr>
+          <tr><td>Juniper Junos</td><td>Network</td><td><code>set system login user …</code></td><td><span class="pill plan">Planned</span></td></tr>
+          <tr><td>Palo Alto PAN-OS</td><td>Security</td><td><code>set mgt-config users …</code></td><td><span class="pill plan">Planned</span></td></tr>
+          <tr><td>Cisco NX-OS</td><td>Network</td><td><code>username … password</code></td><td><span class="pill plan">Planned</span></td></tr>
+          <tr><td>IBM AIX, Oracle Solaris, HP-UX</td><td>Server</td><td><code>passwd</code> through a control account</td><td><span class="pill plan">Planned</span></td></tr>
+          <tr><td>LDAP directory accounts</td><td>Directory</td><td>Password modify through a privileged bind</td><td><span class="pill plan">Planned</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">IBM Db2 logins are operating-system accounts on the database server: manage them as Linux or Unix accounts on that server.</p>
+  </div>
+</section>
+
+<section class="band alt">
+  <div class="wrap">
+    <h2>Sessions and access</h2>
+    <div class="sys">
+      <div class="sys-group"><h3>Remote sessions</h3><ul><li>SSH (browser and native clients)</li><li>RDP</li><li>VNC</li><li>SFTP, SCP and rsync</li></ul></div>
+      <div class="sys-group"><h3>Applications</h3><ul><li>Windows RDS RemoteApp programs</li><li>Database tools with a vaulted login</li><li>Admin consoles (MMC, ADUC)</li></ul></div>
+      <div class="sys-group"><h3>Identity</h3><ul><li>Active Directory</li><li>LDAP</li><li>OpenID Connect single sign-on</li><li>TOTP authenticator apps</li></ul></div>
+      <div class="sys-group"><h3>Clients</h3><ul><li>Any modern browser</li><li>OpenSSH and other SSH clients</li><li>HTTPS for the Credential API</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section class="closing">
+  <h2>Need a platform that isn't listed?</h2>
+  <p>Tell us what you run. Many devices can be added as a custom platform without waiting for a release.</p>
+  <a class="btn primary" href="contact.html">Contact us</a>
+</section>
+</main>
+<footer class="foot">
+  <div class="foot-brand"><span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l8 3v6c0 5.2-3.4 9.9-8 11-4.6-1.1-8-5.8-8-11V5z"/></svg></span><span>Vaultgate<small>Self-hosted privileged access by Cnova</small></span></div>
+  <nav aria-label="Footer"><a href="./">Overview</a> · <a href="features.html">Features</a> · <a href="workflow.html">Workflow</a> · <a href="platforms.html">Platforms</a> · <a href="security.html">Security</a> · <a href="deployment.html">Deployment</a> · <a href="faq.html">FAQ</a> · <a href="contact.html">Contact</a></nav>
+  <span class="copy">© 2026 Cnova</span>
+</footer>
+<script src="site.js?v=e69eeee86c" defer></script>
+</body>
+</html>
