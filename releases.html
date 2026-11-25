@@ -34,14 +34,14 @@
     <div class="rel-current">
       <div>
         <p class="rel-tag">Current release</p>
-        <h2>Vaultgate 0.1.0-45</h2>
+        <h2>Vaultgate 0.1.0-46</h2>
         <p class="sub">Released 26 November 2026. Install it from the Updates page of the appliance console. Failover pairs still on 0.1.0-29 or older: update the standby first, then the primary.</p>
       </div>
       <dl class="rel-files">
-        <dt>Installer</dt><dd><code>vaultgate-0.1.0-45-amd64.iso</code> · 438 MB</dd>
-        <dt>SHA-256</dt><dd><code class="hash">7850cae89aa7aa352f050ccc34bb04f14bad5c4762d4bb7926458ba0dde41422</code></dd>
-        <dt>Update</dt><dd><code>vaultgate-0.1.0-45.vgupdate</code> · 48 MB</dd>
-        <dt>SHA-256</dt><dd><code class="hash">1f8cfdb8876033fd62d8fac7110d75c5c9f76b54215ab5d0f4c69a444456a165</code></dd>
+        <dt>Installer</dt><dd><code>vaultgate-0.1.0-46-amd64.iso</code> · 438 MB</dd>
+        <dt>SHA-256</dt><dd><code class="hash">4b1caa31c5d79aed864ea6d39055b40675c014100c9478441bd0066187026c2c</code></dd>
+        <dt>Update</dt><dd><code>vaultgate-0.1.0-46.vgupdate</code> · 49 MB</dd>
+        <dt>SHA-256</dt><dd><code class="hash">275fc2600df7ac13ea88c3ed9f0c3d4e588ecea7c1e4bc67e27869a59d563c30</code></dd>
       </dl>
     </div>
   </div>
@@ -63,6 +63,15 @@
   <div class="wrap">
     <h2>Release history</h2>
     <div class="rel-list">
+
+      <article class="rel"><header><h3>0.1.0-46</h3><time datetime="2026-11-26">26 Nov 2026</time><span class="pill ok">New</span></header>
+        <ul>
+          <li><b>Personal JIT accounts.</b> Instead of a shared account, a policy can give each user, vendor or contractor their own account, <code>jit-&lt;username&gt;</code>, created when they connect and removed when their access ends or is revoked. Its password is random and never shown: Vaultgate signs in with it, and the server's own logs show who it was.</li>
+          <li><b>Servers:</b> Linux and Windows local accounts, in the groups the policy lists. Live sessions end and, on Linux, the user's processes and home folder are removed afterwards.</li>
+          <li><b>Active Directory:</b> one domain account per user in an OU you choose, allowed to sign in only to the servers the policy covers, deleted afterwards.</li>
+          <li><b>Databases:</b> a personal login on SQL Server, Oracle, MySQL, MariaDB and PostgreSQL with the listed roles. Applications such as database consoles on RDS can put in each user's own login instead of a shared one.</li>
+          <li>Vaultgate never takes over or deletes an account it didn't make. The Vault page lists personal accounts with Remove now and Check server.</li>
+        </ul></article>
 
       <article class="rel"><header><h3>0.1.0-45</h3><time datetime="2026-11-26">26 Nov 2026</time><span class="pill ok">New</span></header>
         <ul>

@@ -55,6 +55,7 @@
       <a href="#control">Control accounts</a>
       <a href="#rotation">Rotation policies</a>
       <a href="#policies">Access policies and approvals</a>
+      <a href="#personal-jit">Personal JIT accounts</a>
       <a href="#checkout">Check-out and check-in</a>
       <a href="#applications">RemoteApp applications</a>
       <a href="#credapi">Credential API</a>
@@ -212,6 +213,17 @@
           <li>clipboard, file transfer, blocked commands, blocked words and the paste box.</li>
         </ul>
         <p>Revoking access ends live sessions straight away; approved access expires on its own.</p></article>
+      <article id="personal-jit"><h3>Personal JIT accounts</h3>
+        <p>Instead of sharing a standing account, a policy can give each user their own account on the servers it covers. Tick <b>Personal JIT accounts</b> on the policy, scope it to an asset, a tag or all servers, and list the groups the account joins (for example <code>sudo</code>, or <code>Remote Desktop Users</code>).</p>
+        <ul>
+          <li>The account is <code>jit-&lt;username&gt;</code>, so the server's own logs show who it was. It works for local, Active Directory, SSO and vendor users alike.</li>
+          <li>It's created at the user's first connection by the server's control account, with a random password that Vaultgate signs in with. Nobody ever sees it.</li>
+          <li>It's removed when the approved access ends or is revoked, or 10 minutes after the last session when the policy needs no approval. Live sessions end first; on Linux the user's processes are stopped and the home folder deleted.</li>
+          <li><b>Servers:</b> Linux and Windows (local accounts). Each needs a control account: root or a sudo user on Linux, an administrator on Windows.</li>
+          <li><b>Active Directory:</b> set the policy's Windows option to <i>One domain account per user</i> and give an OU. Each user then gets one domain account, created over LDAPS by a domain control account, that may sign in only to the servers the policy covers, joins the listed domain groups, and is deleted afterwards. The servers need DNS names, not IP addresses.</li>
+          <li><b>Databases:</b> SQL Server, Oracle, MySQL, MariaDB and PostgreSQL get a personal login <code>jit_&lt;username&gt;</code> with the listed roles, made by the database's control account and dropped afterwards. On an application, choose <i>each user's own personal JIT login on this database</i> and every user who launches it gets their own login instead of a shared one.</li>
+          <li>Vaultgate never touches an account it didn't make. If a server is unreachable at removal time, it retries every 5 minutes; <b>Vault → Personal JIT accounts → Check server</b> lists any leftovers.</li>
+        </ul></article>
       <article id="checkout"><h3>Check-out and check-in</h3>
         <p>When a policy allows reveals, a user can check a password out with a reason for a limited time. The account is locked to them while it's out. It's checked back in automatically when the time runs out, and its password can change on check-in, so a revealed password stops working.</p></article>
       <article id="applications"><h3>RemoteApp applications</h3>
