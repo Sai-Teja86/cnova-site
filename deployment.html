@@ -81,7 +81,7 @@
           <tr><td class="mono">445/tcp</td><td>Outbound</td><td>Windows local account rotation</td></tr>
           <tr><td class="mono">636/tcp</td><td>Outbound</td><td>Active Directory and LDAP over TLS</td></tr>
           <tr><td class="mono">1433, 1521, 3306, 5432, …</td><td>Outbound</td><td>Databases being rotated, on their own ports</td></tr>
-          <tr><td class="mono">443/tcp</td><td>Outbound</td><td>License check-in (once a day; works 30 days offline)</td></tr>
+          <tr><td class="mono">443/tcp</td><td>Outbound</td><td>License check-in (once a day; works 30 days offline). Not needed with offline activation</td></tr>
         </tbody>
       </table>
     </div>
@@ -97,7 +97,7 @@
       <div class="card"><h3>Updates</h3><p>Signed update bundles installed from the appliance console. A failover pair updates the standby and witness first.</p></div>
       <div class="card"><h3>Storage</h3><p>Recording compression and retention, with disk alerts before space runs out.</p></div>
       <div class="card"><h3>Recovery kit</h3><p>Emergency accounts in an encrypted file that opens offline, for the day the appliance is unreachable.</p></div>
-      <div class="card"><h3>Licensing</h3><p>Online activation, a daily check-in that tolerates 30 days offline, and a 30-day trial on every new install.</p></div>
+      <div class="card"><h3>Licensing</h3><p>Online activation with a daily check-in that tolerates 30 days offline, or offline activation with a license file for isolated networks. A 30-day trial on every new install.</p></div>
     </div>
   </div>
 </section>
