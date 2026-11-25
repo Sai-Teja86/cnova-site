@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Knowledge Base · Vaultgate</title>
+<meta name="description" content="Technical guides for Vaultgate administrators: installation, licensing, configuration, operations and troubleshooting.">
+<meta property="og:title" content="Knowledge Base · Vaultgate">
+<meta property="og:description" content="Technical guides for Vaultgate administrators: installation, licensing, configuration, operations and troubleshooting.">
+<meta property="og:url" content="https://cnova.in/docs.html">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://cnova.in/docs.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f766e'/%3E%3Cpath d='M16 6l8 3v6c0 5-3.4 9.3-8 11-4.6-1.7-8-6-8-11V9z' fill='white'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css?v=17a1742491">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="./" aria-label="Vaultgate home"><span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l8 3v6c0 5.2-3.4 9.9-8 11-4.6-1.1-8-5.8-8-11V5z"/></svg></span><span class="brand-text">Vaultgate<small>by Cnova</small></span></a>
+  <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
+  <nav class="links" id="nav" aria-label="Pages"><a href="./">Overview</a><a href="features.html">Features</a><a href="workflow.html">Workflow</a><a href="platforms.html">Platforms</a><a href="security.html">Security</a><a href="deployment.html">Deployment</a><a href="faq.html">FAQ</a><a href="docs.html" aria-current="page">Docs</a><a href="releases.html">Releases</a><a class="nav-cta" href="contact.html">Request a trial</a></nav>
+  <a class="btn primary small cta-top" href="contact.html">Request a trial</a>
+</header>
+<main>
+<section class="head">
+  <div class="orb orb-a" aria-hidden="true"></div>
+  <p class="eyebrow">Knowledge Base</p>
+  <h1>Install, configure and run Vaultgate</h1>
+  <p class="lead">Technical guides for administrators: deployment, licensing, configuration, daily operation and troubleshooting.</p>
+  <div class="kb-search"><input id="kb-q" type="search" placeholder="Search the knowledge base, e.g. failover, LDAPS, rotation" aria-label="Search the knowledge base" autocomplete="off"></div>
+</section>
+
+<section class="band">
+  <div class="wrap kb">
+    <nav class="kb-nav" aria-label="Knowledge base sections">
+      <b>Getting started</b>
+      <a href="#architecture">Architecture</a>
+      <a href="#requirements">Requirements</a>
+      <b>Installation</b>
+      <a href="#install">Install the appliance</a>
+      <a href="#server-console">The server's console</a>
+      <a href="#setup">Setup wizard</a>
+      <a href="#consoles">The two web consoles</a>
+      <a href="#tls">TLS certificate</a>
+      <b>Licensing</b>
+      <a href="#license-online">Online activation</a>
+      <a href="#license-offline">Offline activation</a>
+      <a href="#license-states">License states</a>
+      <a href="#license-updates">Updates and your license</a>
+      <b>Configuration</b>
+      <a href="#users">Users, roles and MFA</a>
+      <a href="#directory">Active Directory and LDAP</a>
+      <a href="#sso">Single sign-on</a>
+      <a href="#assets">Assets and accounts</a>
+      <a href="#onboarding">Bulk import and discovery</a>
+      <a href="#control">Control accounts</a>
+      <a href="#rotation">Rotation policies</a>
+      <a href="#policies">Access policies and approvals</a>
+      <a href="#checkout">Check-out and check-in</a>
+      <a href="#applications">RemoteApp applications</a>
+      <a href="#credapi">Credential API</a>
+      <a href="#files">File transfer and keyword guard</a>
+      <b>Daily use</b>
+      <a href="#sessions">Browser sessions</a>
+      <a href="#ssh-gateway">SSH gateway</a>
+      <a href="#monitoring">Monitoring and replay</a>
+      <a href="#audit">Audit and reports</a>
+      <b>Operations</b>
+      <a href="#backup">Backup and restore</a>
+      <a href="#recovery-kit">Recovery kit</a>
+      <a href="#standby">Warm standby</a>
+      <a href="#failover">Automatic failover</a>
+      <a href="#updates">Updates</a>
+      <a href="#ports">Ports and services</a>
+      <b>Troubleshooting</b>
+      <a href="#ts-console">Console unreachable</a>
+      <a href="#ts-session">A session won't connect</a>
+      <a href="#ts-rotation">Rotation failed</a>
+      <a href="#ts-directory">Directory sign-in fails</a>
+      <a href="#ts-license">License problems</a>
+      <a href="#ts-update">An update was refused</a>
+      <a href="#ts-failover">Failover paused</a>
+      <a href="#ts-ssh">SSH client warnings</a>
+    </nav>
+
+    <div class="kb-body">
+      <p class="kb-none" hidden>No articles match. Try another word, or <a href="contact.html">ask us</a>.</p>
+
+      <h2 class="kb-cat">Getting started</h2>
+      <article id="architecture"><h3>Architecture</h3>
+        <p>Vaultgate is a single appliance that sits between your administrators and the systems they manage.</p>
+        <ul>
+          <li><b>Vault:</b> every password, key and secret is encrypted with AES-256-GCM, each with its own data key, wrapped by the appliance's master key. The database alone is useless without that key.</li>
+          <li><b>Session gateway:</b> users open SSH, RDP and VNC sessions in the browser, or use their own SSH client through the SSH gateway. Vaultgate signs in with the vaulted credential, so users never see it, and records the session.</li>
+          <li><b>Rotation engine:</b> changes passwords on servers, databases and network devices on a schedule, after use, or on demand, then signs in to confirm the new one works.</li>
+          <li><b>Policy engine:</b> access is denied unless a policy grants it, to a user, role or directory group, for an account, asset or tag, optionally within time windows or after approval.</li>
+          <li><b>Audit trail:</b> every sign-in, decision, reveal, session and change is written to an append-only, HMAC-chained log that shows any edit.</li>
+        </ul></article>
+      <article id="requirements"><h3>Requirements</h3>
+        <ul>
+          <li><b>Appliance:</b> 2 vCPU, 4 GB memory, 40 GB disk or more (recordings need space). BIOS or UEFI; Secure Boot supported.</li>
+          <li><b>Witness</b> (automatic failover only): 1 vCPU, 2 GB memory, 20 GB disk.</li>
+          <li><b>Platforms:</b> VMware, Microsoft Hyper-V (Gen 1 and Gen 2), Proxmox, KVM, Nutanix AHV, or a physical x86-64 server.</li>
+          <li><b>Users:</b> a current web browser. Nothing is installed on their computers.</li>
+          <li><b>Network:</b> users reach the appliance on 443 (and 2200 for the SSH gateway). The appliance reaches your systems on their usual ports. See <a href="#ports">Ports and services</a>.</li>
+        </ul></article>
+
+      <h2 class="kb-cat">Installation</h2>
+      <article id="install"><h3>Install the appliance</h3>
+        <ol>
+          <li>Create a VM with the <a href="#requirements">requirements</a> above and attach the Vaultgate ISO. On Hyper-V Gen 2 with Secure Boot, choose the <b>Microsoft UEFI Certificate Authority</b> template.</li>
+          <li>Boot it and choose <b>Install</b>. The installation is unattended and <b>erases the first disk</b>. It uses English, UTC and DHCP if available, and downloads nothing.</li>
+          <li>The machine restarts into the appliance.</li>
+        </ol>
+        <p>Every installation generates its own vault master key, TLS certificate, SSH gateway host key, appliance ID and database on first start. Nothing secret is shared between appliances or shipped on the ISO.</p>
+        <p class="kb-tip">On Nutanix AHV with automatic failover, use a network without IP address management, or reserve the virtual address in it: AHV may drop traffic for addresses it didn't assign.</p></article>
+      <article id="server-console"><h3>The server's console</h3>
+        <p>The appliance's own screen shows the Vaultgate console menu. There is no login prompt and root is locked. From it you can:</p>
+        <ul>
+          <li>read the web address and the one-time <b>setup code</b> (Status);</li>
+          <li>set the network (static address, gateway, DNS), host name and time servers;</li>
+          <li>replace the TLS certificate, restart services, read logs, reboot or shut down.</li>
+        </ul></article>
+      <article id="setup"><h3>Setup wizard</h3>
+        <ol>
+          <li>Open <code>https://&lt;appliance address&gt;/</code>. The browser warns about the self-signed certificate until you <a href="#tls">install your own</a>.</li>
+          <li>Enter the setup code from the server's console. It works once.</li>
+          <li>Read and accept the license agreement, then create the first administrator. MFA is required by default: you set up an authenticator app next.</li>
+          <li>You land on the License page: <a href="#license-online">activate your license</a> or continue on the 30-day trial.</li>
+        </ol>
+        <p>The wizard also offers <b>Restore from a backup</b>, <b>Set up as a standby</b> and <b>Set up as a witness</b>. See <a href="#backup">Backup</a> and <a href="#failover">Failover</a>.</p></article>
+      <article id="consoles"><h3>The two web consoles</h3>
+        <ul>
+          <li><code>https://&lt;address&gt;/</code>: privileged access. Vault, policies, users, sessions, approvals, audit and reports.</li>
+          <li><code>https://&lt;address&gt;/appliance/</code>: the appliance itself. License, Updates, Backup, Standby and failover, Storage and the Recovery Kit.</li>
+        </ul>
+        <p>Both use the same administrator accounts, and a session started in one carries over to the other in the same browser tab.</p></article>
+      <article id="tls"><h3>TLS certificate</h3>
+        <p>The appliance starts with a self-signed certificate. Replace it with one from your internal CA or a public CA from the server's console, so browsers, SSH-gateway users and the Credential API trust the appliance. Include every name and address users connect to, including the failover virtual address.</p></article>
+
+      <h2 class="kb-cat">Licensing</h2>
+      <article id="license-online"><h3>Online activation</h3>
+        <p>On the <b>License</b> page, enter your license key and click <b>Activate</b>. The appliance sends the key, its appliance ID, host name, version, installer build and the number of assets and users. No credentials, recordings or audit data leave the appliance.</p>
+        <p>It then checks in once a day and keeps working for 30 days without a check-in, so an internet outage doesn't stop it. <b>Check in now</b> retries straight away.</p></article>
+      <article id="license-offline"><h3>Offline activation</h3>
+        <p>For appliances that can never reach the internet:</p>
+        <ol>
+          <li>On the License page, under <b>Offline activation</b>, enter the license key and click <b>Make request code</b>.</li>
+          <li>Copy the code or save it as a file, and send it to Cnova from any computer.</li>
+          <li>Upload the license file you receive, or paste its contents, and click <b>Install license file</b>.</li>
+        </ol>
+        <p>An offline license never checks in: it works until the license expires, plus the grace period. When you renew, repeat these steps. A license file only works on the appliance that made the request.</p></article>
+      <article id="license-states"><h3>License states</h3>
+        <ul>
+          <li><b>Trial:</b> everything works for 30 days, up to 50 assets and 25 users.</li>
+          <li><b>Active:</b> licensed. Warnings appear 30 days before expiry, or when a check-in is overdue.</li>
+          <li><b>Grace:</b> the license has expired but still works for 14 days, with a warning.</li>
+          <li><b>Restricted:</b> the trial or grace period ended, the license was revoked, check-ins stopped for too long, or the program files were changed.</li>
+        </ul>
+        <p>When restricted, new sessions, check-outs, imports and new assets or users are refused. Administrators keep sign-in, the audit trail, reports, password retrieval, rotation, the Credential API and live sessions, so nobody is locked out of their own systems.</p></article>
+      <article id="license-updates"><h3>Updates and your license</h3>
+        <p>Each license includes updates up to a date, normally the end of the license or support term (shown on the License page under <b>Updates</b>). An update released after that date is refused, with a message to renew. Updates released earlier still install.</p>
+        <p><b>Security-fix updates always install</b> on a licensed appliance, whatever the dates, so a lapsed renewal never leaves a known hole open.</p></article>
+
+      <h2 class="kb-cat">Configuration</h2>
+      <article id="users"><h3>Users, roles and MFA</h3>
+        <ul>
+          <li><b>Roles:</b> <i>admin</i> (everything), <i>approver</i> (approves access requests), <i>auditor</i> (audit, reports, recordings, live monitoring), <i>user</i> (connects to what policies allow).</li>
+          <li><b>Passwords</b> are hashed with Argon2id, at least 12 characters with upper- and lower-case letters and a digit. Repeated failures lock the account for a while.</li>
+          <li><b>MFA:</b> time-based codes from any authenticator app. It can be required per user or for everyone. Keep at least two administrators with MFA, so one can always help the other.</li>
+        </ul></article>
+      <article id="directory"><h3>Active Directory and LDAP</h3>
+        <p>Go to <b>Administration → Security Providers → Add Active Directory</b> and enter the domain name, a domain controller, and an ordinary domain user with its password, used only to read the directory.</p>
+        <ol>
+          <li>Vaultgate connects over LDAPS (port 636) and shows the domain controller's certificate thumbprint. Confirm it.</li>
+          <li><b>Groups:</b> pick which directory groups give which role. Everyone else can't sign in, unless you choose a default role.</li>
+          <li><b>Users:</b> preview who will get which role, and import them before their first sign-in if you want.</li>
+        </ol>
+        <p>Users then sign in as <code>DOMAIN\user</code> or <code>user@domain</code>. Their role is refreshed from their groups at every sign-in, and a sync (every 15 minutes by default) disables leavers and ends live sessions they're no longer allowed. Add as many domains and LDAP directories as you need.</p></article>
+      <article id="sso"><h3>Single sign-on</h3>
+        <p>Add an <b>OpenID Connect</b> provider under Security Providers, and register <code>https://&lt;address&gt;/api/auth/oidc/callback</code> as the redirect address in your identity provider. Each provider gets its own sign-in button.</p>
+        <p>Link an SSO provider to the directory behind it, so its users get that directory's role mapping and leaver sync. MFA is then done by your identity provider.</p></article>
+      <article id="assets"><h3>Assets and accounts</h3>
+        <p>An <b>asset</b> is a system: a Linux or Windows server, a database, a network device or a published application server. An <b>account</b> is a credential on it, stored in the vault. Tags on assets let one policy cover many systems.</p>
+        <p>A <b>linked account</b> is one credential used on many assets of the same protocol, such as a domain account on many Windows servers. Users choose the server when they connect.</p>
+        <p>Use <b>Connection Test</b> to check every asset's port and every account's sign-in in one click. Its <b>Connect</b> button opens a recorded test session as an administrator, without an access policy.</p></article>
+      <article id="onboarding"><h3>Bulk import and discovery</h3>
+        <ul>
+          <li><b>CSV import:</b> assets and accounts with a full preview. Nothing is written while any row has an error.</li>
+          <li><b>Active Directory discovery:</b> computers (added as RDP or SSH assets) and privileged or service accounts, chosen by group, OU, name or admin flag.</li>
+          <li><b>Windows local accounts:</b> discovered over SMB on chosen servers.</li>
+        </ul>
+        <p>With a <a href="#control">control account</a>, discovered accounts get a new password the moment they're vaulted, so you never need to know the current ones.</p></article>
+      <article id="control"><h3>Control accounts</h3>
+        <p>A control account is a privileged account Vaultgate uses to change other accounts' passwords: root or a sudo user on Linux, a local or domain administrator on Windows, a database administrator, or a device administrator. They have their own page, are off by default, and only administrators can retrieve them.</p></article>
+      <article id="rotation"><h3>Rotation policies</h3>
+        <p>A rotation policy sets how often a password changes, whether it changes after every use, its length and characters, and characters to avoid. Pick one per account, or <i>None</i>. After every change Vaultgate signs in with the new password to confirm it works.</p>
+        <ul>
+          <li><b>Linux and Unix:</b> the account changes its own password, or a control account changes it.</li>
+          <li><b>Windows:</b> local and domain accounts.</li>
+          <li><b>Databases:</b> SQL Server, Oracle, MySQL, MariaDB, PostgreSQL, MongoDB, Redis, Valkey, Cassandra and SAP HANA, each with its own statement. Db2 accounts are operating-system accounts.</li>
+          <li><b>Network devices:</b> Cisco IOS and IOS-XE, and FortiGate, through a control account on the device.</li>
+          <li><b>Custom platforms:</b> define your own command steps for systems not listed.</li>
+        </ul>
+        <p class="kb-tip">Device passwords can't contain spaces, quotes, <code>?</code>, <code>\</code> or <code>!</code>, and Oracle passwords can't contain a double quote. Exclude them in the policy; generated passwords avoid them automatically.</p></article>
+      <article id="policies"><h3>Access policies and approvals</h3>
+        <p>Nobody can do anything until a policy allows it. A policy grants a user, role or directory group access to accounts, assets, tags or everything, and sets:</p>
+        <ul>
+          <li>whether they may open sessions, reveal passwords, or both;</li>
+          <li>days and hours, and a maximum session length;</li>
+          <li>whether access needs approval (<b>just-in-time</b>): the user asks with a reason and duration, an approver accepts or refuses, and nobody approves their own request;</li>
+          <li>clipboard, file transfer, blocked commands, blocked words and the paste box.</li>
+        </ul>
+        <p>Revoking access ends live sessions straight away; approved access expires on its own.</p></article>
+      <article id="checkout"><h3>Check-out and check-in</h3>
+        <p>When a policy allows reveals, a user can check a password out with a reason for a limited time. The account is locked to them while it's out. It's checked back in automatically when the time runs out, and its password can change on check-in, so a revealed password stops working.</p></article>
+      <article id="applications"><h3>RemoteApp applications</h3>
+        <p>Programs published on a Windows RDS server, such as database tools or admin consoles, open as a single window in the browser, signed in with a vaulted account. A second vaulted credential can be passed to the program: as parameters of the published RemoteApp, or through a small launcher on the RDS server that runs as that account or types it into the login window.</p>
+        <p class="kb-tip">Treat the RDS server as part of the vault's trust boundary: patch it and keep its local administrators few. Prefer <i>runas /netonly</i> or typing into the login window: parameters are visible to anyone who can list processes there.</p></article>
+      <article id="credapi"><h3>Credential API</h3>
+        <p>Scripts, scanners and pipelines fetch a password when they need it, so rotation never breaks them. Register each application under <b>Credential API</b> with the addresses it connects from and the accounts it may fetch. Its API key is shown once.</p>
+        <pre><code>curl -H "Authorization: Bearer vgk_…" \
+  "https://vaultgate.example.com/api/v1/credential?address=10.0.5.20&amp;username=svc_scan&amp;reason=weekly+scan"</code></pre>
+        <p>Choose the account by <code>address</code> and <code>username</code>, by <code>name=asset/username</code>, or by <code>account=&lt;id&gt;</code>. Errors: 401 wrong key, 403 address or account not allowed, 404 no match, 409 more than one match, 429 rate limit. Ten failures in five minutes block the address for the rest of that window. Every fetch is audited.</p></article>
+      <article id="files"><h3>File transfer and keyword guard</h3>
+        <ul>
+          <li><b>RDP file transfer:</b> upload and download are separate switches, both off by default. Files go through a per-session drive that is wiped afterwards, and each file's name, size and SHA-256 are logged.</li>
+          <li><b>File checks:</b> policies can block file types (by their real contents) and blocked words inside text, Office and zip files, in both directions.</li>
+          <li><b>Blocked words:</b> in RDP, VNC and application sessions, typing a listed word warns the user or ends the session.</li>
+          <li><b>Paste box:</b> with the clipboard off, users paste into a box that is checked before the text is typed into the session.</li>
+        </ul>
+        <p>These are deterrents. Least-privilege accounts are the real control.</p></article>
+
+      <h2 class="kb-cat">Daily use</h2>
+      <article id="sessions"><h3>Browser sessions</h3>
+        <p>Users open <b>My Access</b> and click <b>Connect</b>. The session opens in its own browser tab: a terminal for SSH, a desktop for RDP and VNC, a single window for applications. Accounts that need approval show <b>Request access</b> instead. Idle sessions end after 15 minutes by default.</p></article>
+      <article id="ssh-gateway"><h3>SSH gateway</h3>
+        <p>Users who prefer their own tools connect on port 2200:</p>
+        <pre><code>ssh -p 2200 alice@vaultgate                         # sign in, then choose a target
+ssh -p 2200 alice+root@web-01@vaultgate             # straight to root on web-01
+scp -P 2200 file.tgz alice+deploy@web-01@vaultgate:/tmp/
+sftp -P 2200 alice+root@web-01@vaultgate</code></pre>
+        <p>The part before <code>+</code> is the Vaultgate username, the part after it is <code>account@asset</code>. Directory users add their domain: <code>ssh -p 2200 user@domain@vaultgate</code>. Users sign in with their password or an SSH key added under <b>My profile</b>, then their MFA code. File transfer needs <i>Allow file transfer</i> on the policy. Port, agent and X11 forwarding are refused.</p>
+        <p>Publish the gateway's host-key fingerprint (shown on My profile) so users can check it the first time they connect.</p></article>
+      <article id="monitoring"><h3>Monitoring and replay</h3>
+        <p>Under <b>Sessions</b>, auditors and administrators can watch a live session read-only, and administrators can end it. Every session is recorded and sealed into the audit trail when it ends. <b>Replay</b> checks the recording's integrity, then plays it with seeking. Commands and typed lines are indexed, so you can search across every recording and jump to the moment they were typed.</p></article>
+      <article id="audit"><h3>Audit and reports</h3>
+        <ul>
+          <li><b>Audit Log:</b> tabs for sign-ins, sessions, credentials, access, identity and configuration, in plain language, with CSV export. <b>Verify integrity</b> checks the whole chain.</li>
+          <li><b>Reports:</b> a session report, an activity log and a PDF management report with usage, peak hours and findings such as failing rotations, stale passwords and administrators without MFA.</li>
+        </ul>
+        <p class="kb-tip">The chain detects edits, but not removal of the newest events. Send the audit log to your SIEM as well, for an off-box copy.</p></article>
+
+      <h2 class="kb-cat">Operations</h2>
+      <article id="backup"><h3>Backup and restore</h3>
+        <p>The <b>Backup</b> page (appliance console) creates an encrypted file with the database, vault master key, signing keys, TLS certificate and, optionally, recordings. You choose a passphrase. It isn't stored, so without it the file can't be opened.</p>
+        <p>To restore, install the same version or later on a new server and choose <b>Restore from a backup</b> in the setup wizard. Passwords rotated after the backup aren't in it. The license keeps working for 14 days: release the old appliance's seat, then activate the key again.</p></article>
+      <article id="recovery-kit"><h3>Recovery kit</h3>
+        <p>For the day Vaultgate itself is down. The <b>Recovery Kit</b> seals chosen emergency accounts, such as a domain administrator, into one HTML file that opens in a browser with no network. Opening it needs a set number of recovery codes, for example any 2 of 3, each held by a different person.</p>
+        <ol>
+          <li>Choose only the accounts needed to get systems back. Automatic rotation stops for them.</li>
+          <li>Create the codes and give each holder one. They're shown once.</li>
+          <li>Download the kit, keep copies away from the appliance and the codes, and test-open it once with the network off.</li>
+        </ol>
+        <p>The console warns when a password in the kit changes. Download a new kit; the codes stay the same.</p></article>
+      <article id="standby"><h3>Warm standby</h3>
+        <ol>
+          <li>Install a second appliance, ideally on another host or site, and choose <b>Set up as a standby</b> in its wizard. It shows a pairing code once.</li>
+          <li>On the primary, open <b>Standby</b> and enter the standby's address and code.</li>
+        </ol>
+        <p>The primary sends an encrypted backup every 15 minutes by default, and within about a minute of any change. To fail over by hand, shut the primary down and promote the standby from its page with its setup code.</p></article>
+      <article id="failover"><h3>Automatic failover</h3>
+        <p>Needs three appliances, ideally on three hosts: the primary, a paired standby and a small <b>witness</b> that decides which one may serve, so both never do.</p>
+        <ol>
+          <li>Install the witness and choose <b>Set up as a witness</b>. It shows a code once.</li>
+          <li>On the primary's Standby page, under <b>Automatic failover</b>, enter the witness's address and code and a free <b>virtual address</b>, such as <code>192.168.110.130/24</code>. Point users and DNS at the virtual address.</li>
+        </ol>
+        <p>If the primary stops answering, the standby takes over the virtual address in about 45 seconds. Live sessions end; users reconnect to the same address. A replaced primary that comes back stops serving by itself.</p></article>
+      <article id="updates"><h3>Updates</h3>
+        <p>Updates are signed bundles (<code>.vgupdate</code>) from Cnova. On the <b>Updates</b> page, upload the file. Vaultgate checks its signature, shows its notes, and installs it after your password and MFA code. It saves the current version and database first, and goes back automatically if the new version doesn't start properly.</p>
+        <ul>
+          <li><b>With failover,</b> install on the primary only: it updates the standby and witness first, then itself.</li>
+          <li><b>Operating system patches:</b> appliances with internet access install Debian security updates by themselves. Offline appliances get them in update bundles, which install only packages newer than the appliance's own.</li>
+          <li>A new kernel takes effect at the next restart.</li>
+        </ul></article>
+      <article id="ports"><h3>Ports and services</h3>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Port</th><th>Direction</th><th>Used for</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">443/tcp</td><td>In</td><td>Web consoles, browser sessions, Credential API</td></tr>
+            <tr><td class="mono">2200/tcp</td><td>In</td><td>SSH gateway</td></tr>
+            <tr><td class="mono">22, 3389, 5900/tcp</td><td>Out</td><td>SSH, RDP and VNC targets</td></tr>
+            <tr><td class="mono">445/tcp</td><td>Out</td><td>Windows local account rotation and discovery</td></tr>
+            <tr><td class="mono">636/tcp</td><td>Out</td><td>Active Directory and LDAP over TLS</td></tr>
+            <tr><td class="mono">Database ports</td><td>Out</td><td>Database rotation (1433, 1521, 3306, 5432, …)</td></tr>
+            <tr><td class="mono">443/tcp</td><td>Out</td><td>License check-in and OS updates (not needed offline)</td></tr>
+          </tbody>
+        </table></div>
+        <p>Nothing else is open: the appliance firewall allows only 443, 2200, ping and DHCP replies in. There is no SSH server on the appliance itself. Data lives in <code>/var/lib/vaultgate</code>.</p></article>
+
+      <h2 class="kb-cat">Troubleshooting</h2>
+      <article id="ts-console"><h3>The web console is unreachable</h3>
+        <ul>
+          <li>Check the address on the server console's Status page, and that you use <code>https://</code>.</li>
+          <li>Check that port 443 is allowed from your network to the appliance.</li>
+          <li>With failover, use the virtual address. If the primary was replaced, its console says it stopped serving.</li>
+          <li>Restart the services from the server's console, and read its logs.</li>
+        </ul></article>
+      <article id="ts-session"><h3>A session won't connect</h3>
+        <ul>
+          <li>Run <b>Connection Test</b> on the account: it separates a closed port from a wrong password.</li>
+          <li><b>Host key changed:</b> Vaultgate refuses to connect when an SSH server's key changes, in case of interception. If the server was rebuilt, an administrator resets the pinned key on the asset.</li>
+          <li><b>RDP certificate:</b> certificates are checked by default. Give the server a certificate trusted by your CA. <i>Accept untrusted certificates</i> is for labs only.</li>
+          <li><b>Not allowed:</b> check the policy's days and hours, whether approval is needed, and whether the license is restricted.</li>
+        </ul></article>
+      <article id="ts-rotation"><h3>Rotation failed</h3>
+        <ul>
+          <li>Check the control account still works (Connection Test), and that it has the rights to change that account.</li>
+          <li>Check the rotation policy's characters against the platform's limits. See <a href="#rotation">Rotation policies</a>.</li>
+          <li>The failure, with the system's error, is in the Audit Log and on the PDF report's findings.</li>
+        </ul></article>
+      <article id="ts-directory"><h3>Directory sign-in fails</h3>
+        <ul>
+          <li><b>Test</b> on the security provider checks the connection and looks one user up.</li>
+          <li>Port 636 must be open to a domain controller, and its certificate must match the thumbprint you confirmed.</li>
+          <li>Users in no mapped group are refused by design. Check their groups on the provider's <b>Users</b> tab.</li>
+          <li>A directory user can't take over a local account with the same name; that attempt is refused and audited.</li>
+        </ul></article>
+      <article id="ts-license"><h3>License problems</h3>
+        <ul>
+          <li><b>Can't reach the licensing server:</b> allow outbound 443 to it, or use <a href="#license-offline">offline activation</a>. The appliance keeps working for 30 days meanwhile.</li>
+          <li><b>Issued for another appliance:</b> the license is tied to one appliance. After cloning or rebuilding a VM, activate again, and ask Cnova to release the old seat if needed.</li>
+          <li><b>Program files have been changed:</b> the appliance found its files differ from the signed list made at build time. Reinstall from an official installer or apply an official update. The audit log names the files.</li>
+        </ul></article>
+      <article id="ts-update"><h3>An update was refused</h3>
+        <ul>
+          <li><b>Signature not valid:</b> the file was damaged or didn't come from Cnova. Download it again.</li>
+          <li><b>Not newer:</b> that version, or a newer one, is already installed.</li>
+          <li><b>Updates ended:</b> the update was released after your license's update date. Renew, or apply the latest security-fix update.</li>
+          <li><b>Rolled back:</b> the new version didn't start properly, so the previous one was restored. Send the result from the Updates page to support.</li>
+        </ul></article>
+      <article id="ts-failover"><h3>Failover is paused</h3>
+        <p>A banner appears when the witness or the standby can't be reached. Service continues, but automatic failover can't happen until both are back. If the primary restarts while the witness is down, it waits for the witness before taking the virtual address; an administrator can override this on the Standby page.</p></article>
+      <article id="ts-ssh"><h3>SSH client warnings</h3>
+        <ul>
+          <li><b>Unknown host key on first connect:</b> compare it with the fingerprint on My profile.</li>
+          <li><b>OpenSSH 10 post-quantum warning:</b> the gateway doesn't offer a post-quantum key exchange yet. The connection is still encrypted with a standard key exchange.</li>
+        </ul></article>
+    </div>
+  </div>
+</section>
+
+<section class="closing">
+  <h2>Can't find what you need?</h2>
+  <p>Our engineers answer deployment and configuration questions during trials and for every customer.</p>
+  <a class="btn primary" href="contact.html">Contact us</a>
+</section>
+</main>
+<footer class="foot">
+  <div class="foot-brand"><span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l8 3v6c0 5.2-3.4 9.9-8 11-4.6-1.1-8-5.8-8-11V5z"/></svg></span><span>Vaultgate<small>Self-hosted privileged access by Cnova</small></span></div>
+  <nav aria-label="Footer"><a href="./">Overview</a> · <a href="features.html">Features</a> · <a href="workflow.html">Workflow</a> · <a href="platforms.html">Platforms</a> · <a href="security.html">Security</a> · <a href="deployment.html">Deployment</a> · <a href="faq.html">FAQ</a> · <a href="docs.html">Docs</a> · <a href="releases.html">Releases</a> · <a href="contact.html">Contact</a></nav>
+  <span class="copy">© 2026 Cnova</span>
+</footer>
+<script src="site.js?v=9830f1c2a0" defer></script>
+</body>
+</html>
