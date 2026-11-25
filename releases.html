@@ -34,14 +34,14 @@
     <div class="rel-current">
       <div>
         <p class="rel-tag">Current release</p>
-        <h2>Vaultgate 0.1.0-44</h2>
-        <p class="sub">Released 25 November 2026. Install it from the Updates page of the appliance console. Failover pairs still on 0.1.0-29 or older: update the standby first, then the primary.</p>
+        <h2>Vaultgate 0.1.0-45</h2>
+        <p class="sub">Released 26 November 2026. Install it from the Updates page of the appliance console. Failover pairs still on 0.1.0-29 or older: update the standby first, then the primary.</p>
       </div>
       <dl class="rel-files">
-        <dt>Installer</dt><dd><code>vaultgate-0.1.0-44-amd64.iso</code> · 438 MB</dd>
-        <dt>SHA-256</dt><dd><code class="hash">7fd47cdd54c3eebf38c689bba6f6fc46ff846534293bb7531e680e712b571ffd</code></dd>
-        <dt>Update</dt><dd><code>vaultgate-0.1.0-44.vgupdate</code> · 48 MB</dd>
-        <dt>SHA-256</dt><dd><code class="hash">12646c220d7ba117bd78d41abbe4dd03ae4346fa4ced72b358679ca7a11a3e24</code></dd>
+        <dt>Installer</dt><dd><code>vaultgate-0.1.0-45-amd64.iso</code> · 438 MB</dd>
+        <dt>SHA-256</dt><dd><code class="hash">7850cae89aa7aa352f050ccc34bb04f14bad5c4762d4bb7926458ba0dde41422</code></dd>
+        <dt>Update</dt><dd><code>vaultgate-0.1.0-45.vgupdate</code> · 48 MB</dd>
+        <dt>SHA-256</dt><dd><code class="hash">1f8cfdb8876033fd62d8fac7110d75c5c9f76b54215ab5d0f4c69a444456a165</code></dd>
       </dl>
     </div>
   </div>
@@ -63,6 +63,14 @@
   <div class="wrap">
     <h2>Release history</h2>
     <div class="rel-list">
+
+      <article class="rel"><header><h3>0.1.0-45</h3><time datetime="2026-11-26">26 Nov 2026</time><span class="pill ok">New</span></header>
+        <ul>
+          <li><b>Recording per server.</b> Turn recording off on an asset, for example test and UAT servers, to save space. Those sessions are still audited, command-indexed, filtered and can be watched live. The CSV import has a new <code>record</code> column.</li>
+          <li><b>Recording downloads setting</b> on the Storage page: encrypted (default), plain evidence package, or off. Changing it needs the administrator's password and MFA code.</li>
+          <li><b>Encrypted recordings open only where they were made.</b> A downloaded <code>.vgrec</code> file needs its passphrase and a key that stays on the appliance: it opens only on that appliance, its standby, or one restored from its backup, under Sessions → Open recording file. Every opening is audited.</li>
+          <li>Appliances that update switch to encrypted downloads by default; administrators can choose plain again on the Storage page.</li>
+        </ul></article>
 
       <article class="rel"><header><h3>0.1.0-44</h3><time datetime="2026-11-25">25 Nov 2026</time><span class="pill plan">Security</span></header>
         <ul>

@@ -63,6 +63,7 @@
       <a href="#sessions">Browser sessions</a>
       <a href="#ssh-gateway">SSH gateway</a>
       <a href="#monitoring">Monitoring and replay</a>
+      <a href="#recording-options">Recording choices and downloads</a>
       <a href="#audit">Audit and reports</a>
       <b>Operations</b>
       <a href="#backup">Backup and restore</a>
@@ -242,7 +243,14 @@ sftp -P 2200 alice+root@web-01@vaultgate</code></pre>
         <p>The part before <code>+</code> is the Vaultgate username, the part after it is <code>account@asset</code>. Directory users add their domain: <code>ssh -p 2200 user@domain@vaultgate</code>. Users sign in with their password or an SSH key added under <b>My profile</b>, then their MFA code. File transfer needs <i>Allow file transfer</i> on the policy. Port, agent and X11 forwarding are refused.</p>
         <p>Publish the gateway's host-key fingerprint (shown on My profile) so users can check it the first time they connect.</p></article>
       <article id="monitoring"><h3>Monitoring and replay</h3>
-        <p>Under <b>Sessions</b>, auditors and administrators can watch a live session read-only, and administrators can end it. Every session is recorded and sealed into the audit trail when it ends. <b>Replay</b> checks the recording's integrity, then plays it with seeking. Commands and typed lines are indexed, so you can search across every recording and jump to the moment they were typed.</p></article>
+        <p>Under <b>Sessions</b>, auditors and administrators can watch a live session read-only, and administrators can end it. Sessions are recorded and sealed into the audit trail when they end. <b>Replay</b> checks the recording's integrity, then plays it with seeking. Commands and typed lines are indexed, so you can search across every recording and jump to the moment they were typed.</p></article>
+      <article id="recording-options"><h3>Recording choices and downloads</h3>
+        <ul>
+          <li><b>Not recording an asset:</b> untick <i>Record sessions</i> on the asset (or put <code>no</code> in the <code>record</code> column of the CSV import), for example for test and UAT servers. Their sessions keep no screen recording or input log, so they use no recording space, but are still audited, command-indexed, filtered and watchable live.</li>
+          <li><b>Downloads</b> are set on the Storage page: <i>Encrypted</i> (default), <i>Plain</i> or <i>Off</i>. Changing it needs your password and MFA code, and is audited.</li>
+          <li><b>Encrypted downloads:</b> the console shows a passphrase when you download. The <code>.vgrec</code> file's key also needs a secret that never leaves the appliance, so it opens only on the appliance that made it (or its standby, or an appliance restored from its backup), under <b>Sessions → Open recording file</b>. It's decrypted in your browser. Each download and each opening is in the audit log. Keep the passphrase apart from the file, and keep backups: if the appliance and its backups are lost, its files can't be opened.</li>
+          <li><b>Plain downloads:</b> an evidence package with the recording, a player that works in any browser, the session details and typed commands.</li>
+        </ul></article>
       <article id="audit"><h3>Audit and reports</h3>
         <ul>
           <li><b>Audit Log:</b> tabs for sign-ins, sessions, credentials, access, identity and configuration, in plain language, with CSV export. <b>Verify integrity</b> checks the whole chain.</li>
