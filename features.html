@@ -11,7 +11,7 @@
 <meta property="og:type" content="website">
 <link rel="canonical" href="https://cnova.in/features.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f766e'/%3E%3Cpath d='M16 6l8 3v6c0 5-3.4 9.3-8 11-4.6-1.7-8-6-8-11V9z' fill='white'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="style.css?v=17a1742491">
+<link rel="stylesheet" href="style.css?v=9c5533f5d0">
 </head>
 <body>
 <header class="top">
@@ -28,7 +28,7 @@
   <p class="lead">A complete privileged access platform in one appliance. Jump to an area:</p>
   <nav class="toc" aria-label="Feature areas">
     <a href="#vault">Vault</a><a href="#rotation">Rotation</a><a href="#sessions">Sessions</a><a href="#control">Session control</a>
-    <a href="#audit">Recording and audit</a><a href="#policies">Policies</a><a href="#identity">Identity</a>
+    <a href="#audit">Recording and audit</a><a href="#recordings">How recordings are handled</a><a href="#policies">Policies</a><a href="#identity">Identity</a>
     <a href="#onboarding">Discovery</a><a href="#api">Credential API</a><a href="#apps">Applications</a><a href="#operations">Operations</a>
   </nav>
 </section>
@@ -95,9 +95,7 @@
     <div class="feature" id="audit">
       <div><span class="tag">Evidence</span><h2>Recording, monitoring and audit</h2><p class="intro">See everything, change nothing unnoticed.</p></div>
       <ul class="ticks">
-        <li>SSH, RDP and VNC sessions recorded and replayed in the browser, with seeking</li>
-        <li>Recording switched off per server, for example on test and UAT systems, to save space; those sessions stay audited and watchable live</li>
-        <li>Recording downloads off, plain, or encrypted so they open only on the appliance that made them</li>
+        <li>SSH, RDP and VNC sessions recorded and replayed in the browser, with seeking (<a href="#recordings">how recordings are handled</a>)</li>
         <li>Each recording's SHA-256 sealed into the audit trail and checked on replay</li>
         <li>Commands and typed lines indexed and searchable across all recordings</li>
         <li>Watch live sessions read-only; end any session at once</li>
@@ -107,6 +105,35 @@
         <li>Recording compression, retention periods, and disk-space alerts; sessions refused before the disk fills</li>
       </ul>
     </div>
+
+  </div>
+</section>
+
+<section class="band alt" id="recordings">
+  <div class="wrap">
+    <span class="tag">Recordings</span>
+    <h2>How recordings are handled</h2>
+    <p class="sub">A session recording is evidence, and it can show code, data and anything typed on screen. Vaultgate treats it that way from the moment it's made until it's deleted: you decide what's recorded, who sees it, and whether it may ever leave the appliance.</p>
+
+    <ol class="steps three">
+      <li><b>Recorded where it matters</b><span>Every SSH, RDP, VNC and application session is recorded by default. Switch recording off per server, for example on test and UAT systems, and those sessions use no recording space while staying brokered, audited, command-indexed and watchable live.</span></li>
+      <li><b>Sealed when the session ends</b><span>Each recording's SHA-256 goes into the tamper-evident audit trail. Every replay checks it, so a changed recording shows up at once.</span></li>
+      <li><b>Kept to what's needed</b><span>Passwords Vaultgate types in are never in a recording, and transferred files' contents are kept out of it. Keystroke logs are encrypted with the vault key. Recordings are compressed, kept for the period you set, and disk alerts warn before space runs out.</span></li>
+      <li><b>Watched only by the right people</b><span>Only administrators and auditors can replay or monitor sessions, and every replay is in the audit log, with who watched what, and when.</span></li>
+      <li><b>Leaves only if you allow it</b><span>Downloads are one setting, changed only with an administrator's password and MFA code: off, plain evidence package, or encrypted.</span></li>
+      <li><b>Encrypted files stay yours</b><span>An encrypted download needs a passphrase shown once and a key that never leaves the appliance. It opens only on the appliance that made it, under Sessions, with each opening audited. A copied file and its passphrase are useless anywhere else.</span></li>
+    </ol>
+
+    <div class="grid three" style="margin-top:28px">
+      <div class="card"><h3>Built for compliance</h3><p>Turn downloads off and recordings never leave the appliance: they can only be replayed in the console, by the people allowed to, on the record.</p></div>
+      <div class="card"><h3>Survives failover and restore</h3><p>The standby can take a daily copy of recordings, and encrypted downloads still open after a failover or on an appliance restored from your backup.</p></div>
+      <div class="card"><h3>Space where it counts</h3><p>Record production and sensitive systems in full, skip the test and UAT servers people use all day, and let retention clear out the rest.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
 
     <div class="feature" id="policies">
       <div><span class="tag">Least privilege</span><h2>Access policies and just-in-time access</h2><p class="intro">Nobody gets anything until a policy says so.</p></div>
