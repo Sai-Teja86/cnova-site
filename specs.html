@@ -30,7 +30,7 @@
   <nav class="toc" aria-label="Specification areas">
     <a href="#appliance">Appliance</a><a href="#network">Network</a><a href="#targets">Targets</a><a href="#crypto">Encryption</a>
     <a href="#auth">Sign-in</a><a href="#sessions">Sessions</a><a href="#recording">Recording</a><a href="#audit">Audit</a>
-    <a href="#rotation">Rotation</a><a href="#jit">JIT accounts</a><a href="#api">API</a><a href="#ha">Availability</a><a href="#licensing">Licensing</a>
+    <a href="#rotation">Rotation</a><a href="#jit">JIT accounts</a><a href="#api">API</a><a href="#notify">Notifications</a><a href="#ha">Availability</a><a href="#licensing">Licensing</a>
   </nav>
 </section>
 
@@ -66,6 +66,7 @@
           <tr><td class="mono">445/tcp</td><td>Outbound</td><td>Windows local accounts (rotation, discovery, JIT accounts)</td></tr>
           <tr><td class="mono">636/tcp</td><td>Outbound</td><td>Active Directory and LDAP over TLS (389 with StartTLS also supported)</td></tr>
           <tr><td class="mono">1433, 1521, 3306, 5432, …</td><td>Outbound</td><td>Databases, on each one's own port</td></tr>
+          <tr><td class="mono">587, 465 or 25/tcp</td><td>Outbound</td><td>Your mail server, when email notifications are on</td></tr>
           <tr><td class="mono">443/tcp</td><td>Outbound</td><td>OpenID Connect provider; license check-in once a day (not needed with offline activation)</td></tr>
         </tbody>
       </table></div>
@@ -189,6 +190,20 @@
         <tr><th>Rate limit</th><td>Per application, 120 requests a minute by default, up to 6,000</td></tr>
         <tr><th>Abuse protection</th><td>10 failed requests from one address within 5 minutes block it for the rest of that window</td></tr>
         <tr><th>Never released</th><td>Control accounts and personal JIT accounts</td></tr>
+      </tbody></table></div>
+    </div>
+
+    <div class="spec-block" id="notify">
+      <h2>Email notifications</h2>
+      <div class="table-wrap"><table><tbody>
+        <tr><th>Transport</th><td>Your mail server or relay: STARTTLS, implicit TLS, or unencrypted to an internal relay without sign-in</td></tr>
+        <tr><th>Certificates</th><td>Checked by default; an internal CA can be added</td></tr>
+        <tr><th>Sign-in</th><td>Optional; the password is sealed like vault secrets</td></tr>
+        <tr><th>To people</th><td>New access requests to each approver; decisions to the requester</td></tr>
+        <tr><th>Alerts</th><td>Rotation failures, JIT removal failures, disk space, integrity and audit chain, license, failover and standby sync, keyword-guard terminations; each can be switched off</td></tr>
+        <tr><th>Grouping</th><td>Further alerts of one kind within an hour sent as one summary</td></tr>
+        <tr><th>Delivery</th><td>Background outbox, retried for 24 hours; console warning while email isn't getting through; every send audited</td></tr>
+        <tr><th>Content</th><td>No passwords, keys, recordings or command output; approval always needs a sign-in</td></tr>
       </tbody></table></div>
     </div>
 

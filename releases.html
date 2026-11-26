@@ -34,14 +34,14 @@
     <div class="rel-current">
       <div>
         <p class="rel-tag">Current release</p>
-        <h2>Vaultgate 0.1.0-46</h2>
+        <h2>Vaultgate 0.1.0-47</h2>
         <p class="sub">Released 26 November 2026. Install it from the Updates page of the appliance console. Failover pairs still on 0.1.0-29 or older: update the standby first, then the primary.</p>
       </div>
       <dl class="rel-files">
-        <dt>Installer</dt><dd><code>vaultgate-0.1.0-46-amd64.iso</code> · 438 MB</dd>
-        <dt>SHA-256</dt><dd><code class="hash">4b1caa31c5d79aed864ea6d39055b40675c014100c9478441bd0066187026c2c</code></dd>
-        <dt>Update</dt><dd><code>vaultgate-0.1.0-46.vgupdate</code> · 49 MB</dd>
-        <dt>SHA-256</dt><dd><code class="hash">275fc2600df7ac13ea88c3ed9f0c3d4e588ecea7c1e4bc67e27869a59d563c30</code></dd>
+        <dt>Installer</dt><dd><code>vaultgate-0.1.0-47-amd64.iso</code> · 438 MB</dd>
+        <dt>SHA-256</dt><dd><code class="hash">223b730fa96bb88f0ed8ab220e219464d88fa00d2a7802a829bd7b3ef1e3f2a1</code></dd>
+        <dt>Update</dt><dd><code>vaultgate-0.1.0-47.vgupdate</code> · 49 MB</dd>
+        <dt>SHA-256</dt><dd><code class="hash">d13cd171c8cf7c0b006366ab56fe4340ad7a19c13365624e77cac84e757f57cc</code></dd>
       </dl>
     </div>
   </div>
@@ -63,6 +63,15 @@
   <div class="wrap">
     <h2>Release history</h2>
     <div class="rel-list">
+
+      <article class="rel"><header><h3>0.1.0-47</h3><time datetime="2026-11-26">26 Nov 2026</time><span class="pill ok">New</span></header>
+        <ul>
+          <li><b>Email notifications</b> through your own mail server (STARTTLS, TLS or an internal relay, with the server's certificate checked). Set them up in the appliance console under Notifications, and send a test message that shows exactly what your mail server answered.</li>
+          <li><b>Who gets what:</b> new access requests go to each approver, decisions to the requester, and alerts to the addresses you choose: failed password rotations, personal accounts that couldn't be removed, low disk space, failed integrity checks, license warnings, failover and standby problems, and sessions ended by the keyword guard. Each event can be switched off.</li>
+          <li>Alerts of one kind within an hour arrive as one summary. Emails that can't be sent are retried for a day, and the console warns while email isn't getting through.</li>
+          <li>Emails never contain passwords, keys or recordings, and approving a request always needs a sign-in.</li>
+          <li><b>Fix:</b> the Credential API no longer hands out the passwords of personal JIT accounts.</li>
+        </ul></article>
 
       <article class="rel"><header><h3>0.1.0-46</h3><time datetime="2026-11-26">26 Nov 2026</time><span class="pill ok">New</span></header>
         <ul>

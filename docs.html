@@ -72,6 +72,7 @@
       <a href="#standby">Warm standby</a>
       <a href="#failover">Automatic failover</a>
       <a href="#updates">Updates</a>
+      <a href="#notifications">Email notifications</a>
       <a href="#ports">Ports and services</a>
       <b>Troubleshooting</b>
       <a href="#ts-console">Console unreachable</a>
@@ -82,6 +83,7 @@
       <a href="#ts-update">An update was refused</a>
       <a href="#ts-failover">Failover paused</a>
       <a href="#ts-ssh">SSH client warnings</a>
+      <a href="#ts-email">Emails don't arrive</a>
     </nav>
 
     <div class="kb-body">
@@ -302,6 +304,23 @@ sftp -P 2200 alice+root@web-01@vaultgate</code></pre>
           <li><b>Operating system patches:</b> appliances with internet access install Debian security updates by themselves. Offline appliances get them in update bundles, which install only packages newer than the appliance's own.</li>
           <li>A new kernel takes effect at the next restart.</li>
         </ul></article>
+      <article id="notifications"><h3>Email notifications</h3>
+        <p>From 0.1.0-47, Vaultgate emails people through your own mail server or relay. Set it up in the <b>appliance console → Notifications</b>; saving asks for your password and authenticator code again.</p>
+        <ol>
+          <li><b>Mail server:</b> its host name and port. Choose <b>STARTTLS</b> (usually 587) where you can, <b>TLS</b> (usually 465), or <b>Not encrypted</b> (25) only for an internal relay that needs no sign-in. The server's certificate is checked; for an internal mail server, paste the CA certificate that issued it.</li>
+          <li><b>Sign-in:</b> a name and password if your mail server needs them. The password is encrypted like vault secrets and never shown again.</li>
+          <li><b>Sender address</b> and the <b>console address</b> used for links in emails, such as <code>https://pam.example.com</code>.</li>
+          <li><b>Alert recipients:</b> one or more addresses, such as a security team mailbox.</li>
+          <li>Tick the events you want, turn on <b>Send email notifications</b>, save, then <b>Send a test message</b>. The page shows exactly what your mail server answered.</li>
+        </ol>
+        <ul>
+          <li><b>To people:</b> a new access request goes to each approver and administrator with an email address, one email each; the decision goes to the requester. Addresses come from the user's profile or the directory's <code>mail</code> attribute.</li>
+          <li><b>Alerts:</b> failed or paused password rotations, personal JIT accounts that couldn't be removed, low disk space, failed program file checks or a broken audit chain, license warnings (when the state changes, then weekly), failover and standby sync problems, and sessions ended by the keyword guard.</li>
+          <li><b>Grouping:</b> the first alert of a kind is sent at once; more of the same kind within an hour arrive as one summary.</li>
+          <li><b>Delivery:</b> emails are sent in the background and retried for a day, waiting longer each time. The <b>Outbox</b> lists each email with its status and the mail server's last answer, and <b>Send now</b> retries one. While email isn't getting through, the PAM console shows a warning.</li>
+        </ul>
+        <p class="kb-tip">Emails never contain passwords, keys, recordings or command output: they say what happened and link to the console. Approving or denying a request always needs a sign-in. Every email sent or failed is in the audit log.</p></article>
+
       <article id="ports"><h3>Ports and services</h3>
         <div class="table-wrap"><table>
           <thead><tr><th>Port</th><th>Direction</th><th>Used for</th></tr></thead>
@@ -312,6 +331,7 @@ sftp -P 2200 alice+root@web-01@vaultgate</code></pre>
             <tr><td class="mono">445/tcp</td><td>Out</td><td>Windows local account rotation and discovery</td></tr>
             <tr><td class="mono">636/tcp</td><td>Out</td><td>Active Directory and LDAP over TLS</td></tr>
             <tr><td class="mono">Database ports</td><td>Out</td><td>Database rotation (1433, 1521, 3306, 5432, …)</td></tr>
+            <tr><td class="mono">587, 465 or 25/tcp</td><td>Out</td><td>Your mail server, if email notifications are on</td></tr>
             <tr><td class="mono">443/tcp</td><td>Out</td><td>License check-in and OS updates (not needed offline)</td></tr>
           </tbody>
         </table></div>
@@ -364,6 +384,13 @@ sftp -P 2200 alice+root@web-01@vaultgate</code></pre>
         <ul>
           <li><b>Unknown host key on first connect:</b> compare it with the fingerprint on My profile.</li>
           <li><b>OpenSSH 10 post-quantum warning:</b> the gateway doesn't offer a post-quantum key exchange yet. The connection is still encrypted with a standard key exchange.</li>
+        </ul></article>
+      <article id="ts-email"><h3>Emails don't arrive</h3>
+        <ul>
+          <li>On the Notifications page, check that email is <b>On</b> and the event is ticked. People need an email address on their user.</li>
+          <li>Use <b>Send a test message</b> and read the answer: <b>sign-in refused (535)</b> means a wrong name or password; <b>isn't trusted</b> means the mail server's CA certificate is missing; <b>doesn't offer STARTTLS</b> means use TLS on 465, or an internal relay on 25; <b>can't reach</b> means a network or firewall problem between the appliance and the mail server.</li>
+          <li>The <b>Outbox</b> shows each email's last error. After fixing the settings, <b>Send now</b> retries it.</li>
+          <li>The test arrives but alerts don't: check the alert recipients, and your spam filter. Many alerts of one kind arrive as one summary an hour later.</li>
         </ul></article>
     </div>
   </div>

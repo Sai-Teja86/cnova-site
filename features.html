@@ -320,6 +320,7 @@
         <li>Updating a pair updates the standby and witness first</li>
         <li>Recovery kit: emergency accounts in an encrypted file that opens offline, unlocked by a set number of recovery codes (for example 2 of 3)</li>
         <li>Appliance console for network, time, license, storage and updates</li>
+        <li>Email notifications through your mail server: access requests to approvers, decisions to requesters, and alerts to your team</li>
       </ul>
       <details class="how"><summary>How it works</summary>
 <ul>
@@ -327,6 +328,7 @@
 <li><b>Standby copy.</b> After each change the primary sends an encrypted backup to the standby. Recordings follow once a day. The pairing secret never crosses the network.</li>
 <li><b>Backups.</b> Encrypted with a passphrase you choose, with or without recordings, and restorable on a new appliance from the setup wizard.</li>
 <li><b>Updates.</b> A signed bundle is uploaded and checked before anything changes. If the new version fails to start, the appliance rolls back by itself. In a pair, the standby and witness are updated first.</li>
+<li><b>Email notifications.</b> Vaultgate sends email through your own mail server over STARTTLS or TLS, with its certificate checked. New access requests go to each approver, decisions to the requester, and alerts to your team: failed rotations, JIT accounts that couldn't be removed, low disk, integrity and license problems, failover, and sessions ended by the keyword guard. Alerts of one kind within an hour arrive as one summary, and emails never contain passwords or recordings.</li>
 <li><b>Recovery kit.</b> For the day Vaultgate itself is unreachable: chosen emergency accounts in an encrypted file that opens in any browser offline, unlocked by a set number of recovery codes held by different people.</li>
 </ul>
       </details>
