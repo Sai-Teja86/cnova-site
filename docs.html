@@ -53,7 +53,7 @@
       <a href="#assets">Assets and accounts</a>
       <a href="#onboarding">Bulk import and discovery</a>
       <a href="#control">Control accounts</a>
-      <a href="#rotation">Rotation policies</a>
+      <a href="#rotation">Password policies</a>
       <a href="#policies">Access policies and approvals</a>
       <a href="#personal-jit">Personal JIT accounts</a>
       <a href="#checkout">Check-out and check-in</a>
@@ -125,7 +125,8 @@
         <p>The appliance's own screen shows the Vaultgate console menu. There is no login prompt and root is locked. From it you can:</p>
         <ul>
           <li>read the web address and the one-time <b>setup code</b> (Status);</li>
-          <li>set the network (static address, gateway, DNS), host name and time servers;</li>
+          <li>set the network (static address, gateway, DNS), host name, time zone and NTP servers;</li>
+          <li>set the date and time by hand where no NTP server is reachable (refused while the clock is synchronised);</li>
           <li>replace the TLS certificate, restart services, read logs, reboot or shut down.</li>
         </ul></article>
       <article id="setup"><h3>Setup wizard</h3>
@@ -138,10 +139,10 @@
         <p>The wizard also offers <b>Restore from a backup</b>, <b>Set up as a standby</b> and <b>Set up as a witness</b>. See <a href="#backup">Backup</a> and <a href="#failover">Failover</a>.</p></article>
       <article id="consoles"><h3>The two web consoles</h3>
         <ul>
-          <li><code>https://&lt;address&gt;/</code>: privileged access. Vault, policies, users, sessions, approvals, audit and reports.</li>
-          <li><code>https://&lt;address&gt;/appliance/</code>: the appliance itself. License, Updates, Backup, Standby and failover, Storage and the Recovery Kit.</li>
+          <li><code>https://&lt;address&gt;/</code>: privileged access. Its menu has <b>Workspace</b> (Dashboard, My Access, Requests, Sessions), <b>Administration</b> (Bulk onboarding, Vault with its Assets and Accounts pages, Applications, Connection Test, and <b>Configuration</b>), <b>Oversight</b> (Rotation by platform, Audit Log, Checkouts) and a link to the appliance console. <b>Configuration</b> opens a page of cards: Control accounts, Credential API, Access Policies, Password Policies, Custom platforms, Users and Security Providers.</li>
+          <li><code>https://&lt;address&gt;/appliance/</code>: the appliance itself. License, Updates, Backup, Standby and failover, Storage, Notifications, Log forwarding, Time, Network tools and the Recovery Kit.</li>
         </ul>
-        <p>Both use the same administrator accounts, and a session started in one carries over to the other in the same browser tab.</p></article>
+        <p>Both use the same administrator accounts, and a session started in one carries over to the other in the same browser tab. The menu folds to a column of icons; hover to open it, or click the logo to keep it open. Users sign in from the landing page at the bare address.</p></article>
       <article id="tls"><h3>TLS certificate</h3>
         <p>The appliance starts with a self-signed certificate. Replace it with one from your internal CA or a public CA from the server's console, so browsers, SSH-gateway users and the Credential API trust the appliance. Include every name and address users connect to, including the failover virtual address.</p></article>
 
@@ -189,6 +190,7 @@
         <p>Link an SSO provider to the directory behind it, so its users get that directory's role mapping and leaver sync. MFA is then done by your identity provider.</p></article>
       <article id="assets"><h3>Assets and accounts</h3>
         <p>An <b>asset</b> is a system: a Linux or Windows server, a database, a network device or a published application server. An <b>account</b> is a credential on it, stored in the vault. Tags on assets let one policy cover many systems.</p>
+        <p>In the menu, <b>Vault</b> opens into <b>Assets</b> and <b>Accounts</b>, each a page of its own with a search box (name, address, tag or policy).</p>
         <p>A <b>linked account</b> is one credential used on many assets of the same protocol, such as a domain account on many Windows servers. Users choose the server when they connect.</p>
         <p>Use <b>Connection Test</b> to check every asset's port and every account's sign-in in one click. Its <b>Connect</b> button opens a recorded test session as an administrator, without an access policy.</p></article>
       <article id="onboarding"><h3>Bulk import and discovery</h3>
@@ -200,8 +202,8 @@
         <p>With a <a href="#control">control account</a>, discovered accounts get a new password the moment they're vaulted, so you never need to know the current ones.</p></article>
       <article id="control"><h3>Control accounts</h3>
         <p>A control account is a privileged account Vaultgate uses to change other accounts' passwords: root or a sudo user on Linux, a local or domain administrator on Windows, a database administrator, or a device administrator. They have their own page, are off by default, and only administrators can retrieve them.</p></article>
-      <article id="rotation"><h3>Rotation policies</h3>
-        <p>A rotation policy sets how often a password changes, whether it changes after every use, its length and characters, and characters to avoid. Pick one per account, or <i>None</i>. After every change Vaultgate signs in with the new password to confirm it works.</p>
+      <article id="rotation"><h3>Password policies</h3>
+        <p>A password (rotation) policy sets how often a password changes, whether it changes after every use, its length and characters, and characters to avoid. They're on <b>Configuration → Password Policies</b>. Each policy's <b>Accounts</b> button lists every account, searchable by name, asset or tag, to tick the ones it applies to; accounts that can't be rotated are shown with the reason. You can also pick a policy on each account, or <i>None</i>. After every change Vaultgate signs in with the new password to confirm it works.</p>
         <ul>
           <li><b>Linux and Unix:</b> the account changes its own password, or a control account changes it.</li>
           <li><b>Windows:</b> local and domain accounts.</li>
@@ -218,6 +220,8 @@
           <li>whether access needs approval (<b>just-in-time</b>): the user asks with a reason and duration, an approver accepts or refuses, and nobody approves their own request;</li>
           <li>clipboard, file transfer, blocked commands, blocked words and the paste box.</li>
         </ul>
+        <p>Policies are made on <b>Configuration → Access Policies</b>, in steps: name; who (a Vaultgate group, a directory group, one user, or everyone with a role); to what (all servers, servers with a tag, one server, one account, or an application); how (sessions with a vaulted account, sessions with a personal temporary account, sessions and the password, or the password only) and whether approval is needed; when; and optional session restrictions. A summary beside the form says in plain words what the policy will allow, and what's still missing.</p>
+        <p>One policy covers one "who" and one "what", so use groups and tags: one policy per team and kind of server, not one per person. When several policies match, access is allowed if any one allows it, and approval is needed only if every matching policy asks for it.</p>
         <p>Revoking access ends live sessions straight away; approved access expires on its own.</p></article>
       <article id="personal-jit"><h3>Personal JIT accounts</h3>
         <p>Instead of sharing a standing account, a policy can give each user their own account on the servers it covers. Tick <b>Personal JIT accounts</b> on the policy, scope it to an asset, a tag or all servers, and list the groups the account joins (for example <code>sudo</code>, or <code>Remote Desktop Users</code>).</p>
@@ -294,14 +298,15 @@ sftp -P 2200 alice+root@web-01@vaultgate</code></pre>
           <li>Install a second appliance, ideally on another host or site, and choose <b>Set up as a standby</b> in its wizard. It shows a pairing code once.</li>
           <li>On the primary, open <b>Standby</b> and enter the standby's address and code.</li>
         </ol>
-        <p>The primary sends an encrypted backup every 15 minutes by default, and within about a minute of any change. To fail over by hand, shut the primary down and promote the standby from its page with its setup code.</p></article>
+        <p>The primary sends an encrypted backup every 15 minutes by default, and within about a minute of any change. To fail over by hand, shut the primary down and promote the standby from its page with its setup code.</p>
+        <p class="kb-tip">The primary, standby and witness refuse each other's requests when their clocks differ by more than 5 minutes, so syncs, updates and failover stop. The Standby page's <b>Clocks</b> card shows each one's clock against the primary's. Point all of them at the same NTP server.</p></article>
       <article id="failover"><h3>Automatic failover</h3>
         <p>Needs three appliances, ideally on three hosts: the primary, a paired standby and a small <b>witness</b> that decides which one may serve, so both never do.</p>
         <ol>
           <li>Install the witness and choose <b>Set up as a witness</b>. It shows a code once.</li>
           <li>On the primary's Standby page, under <b>Automatic failover</b>, enter the witness's address and code and a free <b>virtual address</b>, such as <code>192.168.110.130/24</code>. Point users and DNS at the virtual address.</li>
         </ol>
-        <p>If the primary stops answering, the standby takes over the virtual address in about 45 seconds. Live sessions end; users reconnect to the same address. A replaced primary that comes back stops serving by itself.</p></article>
+        <p>If the primary stops answering, the standby takes over the virtual address in about 45 seconds. Live sessions end; users reconnect to the same address. A replaced primary that comes back stops serving by itself and says so. To use it again, factory-reset it on its server console, set it up as the new standby, and pair it from the new primary. There's no automatic switch back.</p></article>
       <article id="updates"><h3>Updates</h3>
         <p>Updates are signed bundles (<code>.vgupdate</code>) from Cnova. On the <b>Updates</b> page, upload the file. Vaultgate checks its signature, shows its notes, and installs it after your password and MFA code. It saves the current version and database first, and goes back automatically if the new version doesn't start properly.</p>
         <ul>
@@ -394,6 +399,7 @@ sftp -P 2200 alice+root@web-01@vaultgate</code></pre>
       <article id="ts-session"><h3>A session won't connect</h3>
         <ul>
           <li>Run <b>Connection Test</b> on the account: it separates a closed port from a wrong password.</li>
+          <li>On the appliance console's <b>Network tools</b>, pick the asset and run a <b>Port check</b>, then a <b>Traceroute</b>: they show what the appliance itself can reach.</li>
           <li><b>Host key changed:</b> Vaultgate refuses to connect when an SSH server's key changes, in case of interception. If the server was rebuilt, an administrator resets the pinned key on the asset.</li>
           <li><b>RDP certificate:</b> certificates are checked by default. Give the server a certificate trusted by your CA. <i>Accept untrusted certificates</i> is for labs only.</li>
           <li><b>Not allowed:</b> check the policy's days and hours, whether approval is needed, and whether the license is restricted.</li>

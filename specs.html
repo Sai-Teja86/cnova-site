@@ -49,7 +49,8 @@
         <tr><th>Sizing</th><td>Sized with you during the trial, from your number of users, concurrent sessions and retention needs</td></tr>
         <tr><th>Unique per install</th><td>Master key, TLS certificate, SSH host key and database are made on first start. Nothing secret is on the installer</td></tr>
         <tr><th>Integrity</th><td>Every installed file is listed in a signed manifest, checked at start-up and daily; a mismatch is audited and restricts the appliance</td></tr>
-        <tr><th>Management</th><td>Web console for everything; the server screen offers network, host name, time, license and update tasks</td></tr>
+        <tr><th>Management</th><td>Web console for everything; the server screen offers network, host name, time zone, NTP and setting the clock by hand, TLS, logs and restart</td></tr>
+        <tr><th>Troubleshooting</th><td>Network tools in the appliance console: ping, traceroute (ICMP or UDP), TCP port check against Vaultgate's ports, and DNS lookup, run from the appliance and audited</td></tr>
       </tbody></table></div>
     </div>
 
@@ -220,6 +221,7 @@
         <tr><th>Standby copy</th><td>Encrypted backup sent after each change; recordings copied daily</td></tr>
         <tr><th>Backups</th><td>Encrypted, with or without recordings; restored onto a new appliance from the setup wizard</td></tr>
         <tr><th>Recovery kit</th><td>Emergency accounts in an encrypted file that opens offline, unlocked by a set number of recovery codes (for example 2 of 3)</td></tr>
+        <tr><th>Clocks</th><td>Primary, standby and witness must agree within 5 minutes; the Standby page shows each one's clock, and a refused request says which clock is off and by how much</td></tr>
         <tr><th>Updates</th><td>Signed bundles, checked before install, rolled back automatically on failure. A pair updates the standby and witness first. Security fixes install regardless of support dates</td></tr>
       </tbody></table></div>
     </div>
