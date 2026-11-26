@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compliance in India · Vaultgate</title>
+<meta name="description" content="How Vaultgate helps you meet CERT-In, the DPDP Act, RBI, SEBI, IRDAI and ISO 27001 expectations for privileged access.">
+<meta property="og:title" content="Compliance in India · Vaultgate">
+<meta property="og:description" content="How Vaultgate helps you meet CERT-In, the DPDP Act, RBI, SEBI, IRDAI and ISO 27001 expectations for privileged access.">
+<meta property="og:url" content="https://cnova.in/compliance.html">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://cnova.in/compliance.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f766e'/%3E%3Cpath d='M16 6l8 3v6c0 5-3.4 9.3-8 11-4.6-1.7-8-6-8-11V9z' fill='white'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css?v=623082c267">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="./" aria-label="Vaultgate home"><span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l8 3v6c0 5.2-3.4 9.9-8 11-4.6-1.1-8-5.8-8-11V5z"/></svg></span><span class="brand-text">Vaultgate<small>by Cnova</small></span></a>
+  <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
+  <nav class="links" id="nav" aria-label="Pages"><a href="./">Overview</a><a href="features.html">Features</a><a href="specs.html">Specs</a><a href="workflow.html">Workflow</a><a href="platforms.html">Platforms</a><a href="security.html">Security</a><a href="compliance.html" aria-current="page">Compliance</a><a href="deployment.html">Deployment</a><a href="faq.html">FAQ</a><a href="docs.html">Docs</a><a href="releases.html">Releases</a><a class="nav-cta" href="contact.html">Request a trial</a></nav>
+  <a class="btn primary small cta-top" href="contact.html">Request a trial</a>
+</header>
+<main>
+<section class="head">
+  <div class="orb orb-a" aria-hidden="true"></div>
+  <p class="eyebrow">Compliance</p>
+  <h1>Built for Indian regulations</h1>
+  <p class="lead">CERT-In, the DPDP Act, RBI, SEBI and IRDAI all expect you to control privileged access and prove it. Vaultgate gives you the controls they ask for and the evidence your auditors check, on an appliance in your own data centre.</p>
+  <nav class="toc" aria-label="Regulations">
+    <a href="#certin">CERT-In</a><a href="#dpdp">DPDP Act</a><a href="#rbi">RBI</a><a href="#sebi">SEBI</a><a href="#irdai">IRDAI</a>
+    <a href="#iso">ISO 27001</a><a href="#india">Data in India</a><a href="#yours">Your part</a>
+  </nav>
+</section>
+
+<section class="band">
+  <div class="wrap specs">
+
+    <p class="note" style="margin-top:0">Regulations apply to your organisation, not to a product, and no regulator certifies PAM tools. What follows maps
+      each framework's privileged access expectations to what Vaultgate does. It is a guide for your compliance team, not legal advice:
+      check the current text of each regulation, which regulators revise.</p>
+
+    <div class="spec-block" id="certin">
+      <h2>CERT-In Directions (April 2022)</h2>
+      <p>Issued under section 70B of the IT Act and binding on service providers, intermediaries, data centres and body corporates in India.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>What it asks</th><th>How Vaultgate helps</th></tr></thead>
+        <tbody>
+          <tr><td>Keep logs of all ICT systems for 180 days, within India</td><td>The audit log is never deleted. Session recordings can't be set to less than 180 days. Everything stays on the appliance in your own data centre</td></tr>
+          <tr><td>Synchronise clocks to NIC or NPL time servers, or to servers traceable to them</td><td>Time page: set NTP servers from the console (one click for NIC and NPL), see the offset and the servers in use, and get an alert if the clock loses sync</td></tr>
+          <tr><td>Report incidents within 6 hours</td><td>Alerts by email as things happen, every audit event forwarded to your SOC at once, and the full trail of who did what, ready for the report</td></tr>
+          <tr><td>Provide logs to CERT-In on request</td><td>Export the audit log as CSV, or produce a PDF report for any period. Recordings can be exported as evidence packages</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="spec-block" id="dpdp">
+      <h2>Digital Personal Data Protection Act 2023 and Rules 2025</h2>
+      <p>Applies to every organisation processing digital personal data in India. Most duties under the Rules take effect in phases after November 2025.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>What it asks</th><th>How Vaultgate helps</th></tr></thead>
+        <tbody>
+          <tr><td>Reasonable security safeguards, including access control</td><td>Nobody needs to know server passwords: Vaultgate holds them encrypted, injects them into sessions and changes them after use. Access is by policy, approval and time window</td></tr>
+          <tr><td>Visibility of access to personal data, to detect and investigate unauthorised access</td><td>Every privileged session is recorded, with typed commands for SSH and keystrokes for remote desktops. Sign-ins, approvals and password reveals are all audited</td></tr>
+          <tr><td>Keep the logs for at least one year</td><td>The audit log is kept for the life of the appliance. Set recordings to 365 days or more, or keep them forever</td></tr>
+          <tr><td>Notify the Board and affected people of a breach</td><td>The recorded sessions and audit trail show exactly which systems were reached, by whom and when, which scopes the notification</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="spec-block" id="rbi">
+      <h2>Reserve Bank of India</h2>
+      <p>Banks, NBFCs, payment system operators and co-operative banks: the Master Direction on IT Governance, Risk, Controls and Assurance Practices (2023), the Cyber Security Framework for banks, and the IT outsourcing direction.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>What it asks</th><th>How Vaultgate helps</th></tr></thead>
+        <tbody>
+          <tr><td>Privileged access management: vaulted and rotated administrator passwords</td><td>Vault with AES-256-GCM envelope encryption; automatic rotation for servers, databases and network devices; passwords changed after each use</td></tr>
+          <tr><td>Multi-factor authentication for privileged users</td><td>Authenticator codes that administrators can require, and single sign-on with your own identity provider</td></tr>
+          <tr><td>Monitoring and recording of privileged activity</td><td>SSH, RDP and VNC sessions recorded and searchable; live monitoring; sessions ended on blocked commands or keywords</td></tr>
+          <tr><td>Least privilege and need-based, time-bound access</td><td>Approval workflows with time windows; personal just-in-time accounts created for a session and removed after it</td></tr>
+          <tr><td>Periodic review of privileged access</td><td>An auditor role that can see and report but not change anything; period reports of users, access, usage and findings</td></tr>
+          <tr><td>Logs to the bank's SOC</td><td>Every audit event forwarded to your SIEM over syslog, encrypted and in order</td></tr>
+          <tr><td>Right to audit the vendor and continuity of critical services</td><td>A self-hosted appliance under your control, with standby and automatic failover, encrypted backups and an offline recovery kit</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="spec-block" id="sebi">
+      <h2>SEBI Cybersecurity and Cyber Resilience Framework (CSCRF, 2024)</h2>
+      <p>Stock brokers, depositories, exchanges, asset management companies and other SEBI-regulated entities.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>What it asks</th><th>How Vaultgate helps</th></tr></thead>
+        <tbody>
+          <tr><td>Privileged identity and access management, with MFA</td><td>Vault, rotation, approvals, MFA and recorded sessions for every administrator, in one appliance</td></tr>
+          <tr><td>Logs collected and monitored by a SOC</td><td>Real-time forwarding of every audit event to your SIEM, with the tamper-evident chain hash in each message</td></tr>
+          <tr><td>Logs and data kept in India</td><td>Self-hosted: no cloud service, no data leaves your network</td></tr>
+          <tr><td>Periodic access reviews</td><td>Auditor role and period reports</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="spec-block" id="irdai">
+      <h2>IRDAI Information and Cyber Security Guidelines (2023)</h2>
+      <p>Insurers and insurance intermediaries.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>What it asks</th><th>How Vaultgate helps</th></tr></thead>
+        <tbody>
+          <tr><td>Control and monitoring of privileged and administrative access</td><td>Brokered, recorded sessions with no password handed to people; approvals and MFA</td></tr>
+          <tr><td>Logs kept for 180 days, in India, with time synchronised</td><td>Audit log never deleted, recordings at least 180 days, NTP status and alerts, all on your own appliance</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="spec-block" id="iso">
+      <h2>ISO/IEC 27001:2022</h2>
+      <p>The certification most Indian enterprises hold, and the baseline many sector regulators refer to.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Annex A control</th><th>How Vaultgate helps</th></tr></thead>
+        <tbody>
+          <tr><td>5.15 Access control, 5.18 Access rights</td><td>Policies by user, group, server and account; approvals; reviews through the auditor role and reports</td></tr>
+          <tr><td>8.2 Privileged access rights</td><td>Privileged accounts vaulted, rotated and reached only through Vaultgate</td></tr>
+          <tr><td>8.5 Secure authentication</td><td>MFA, single sign-on, password injection</td></tr>
+          <tr><td>8.15 Logging, 8.16 Monitoring</td><td>Tamper-evident audit log, session recordings, SIEM forwarding, alerts</td></tr>
+          <tr><td>8.17 Clock synchronisation</td><td>NTP servers set and checked from the console</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="spec-block" id="india">
+      <h2>Your data stays in India</h2>
+      <div class="table-wrap"><table><tbody>
+        <tr><th>Deployment</th><td>An appliance on your own hardware or hypervisor, in your own data centre. No cloud service</td></tr>
+        <tr><th>What leaves the appliance</th><td>Nothing you don't send: email alerts to your mail server, events to your SIEM, backups to where you put them. The daily license check-in sends only the appliance's identity, version and usage counts, and offline activation removes it</td></tr>
+        <tr><th>Evidence</th><td>Recordings and keystroke logs are encrypted on the appliance, the audit log is tamper-evident, and exports are limited to people you allow and audited</td></tr>
+      </tbody></table></div>
+    </div>
+
+    <div class="spec-block" id="yours">
+      <h2>What stays your part</h2>
+      <div class="table-wrap"><table><tbody>
+        <tr><th>Policies and reviews</th><td>Deciding who should have access, and reviewing it on schedule. Vaultgate enforces and records it</td></tr>
+        <tr><th>Incident reporting</th><td>Reporting to CERT-In, the Data Protection Board or your regulator. Vaultgate gives you the facts quickly</td></tr>
+        <tr><th>Retention settings</th><td>Choosing recording retention beyond the 180-day minimum to match your regulator and your own policy</td></tr>
+        <tr><th>Everything outside privileged access</th><td>Endpoint, network and application controls, and the rest of your security programme</td></tr>
+      </tbody></table></div>
+      <p class="note">Need a control mapping for an audit or an RFP? <a href="contact.html">Ask us</a> and we'll go through it with your team.</p>
+    </div>
+
+  </div>
+</section>
+</main>
+<footer class="foot">
+  <div class="foot-brand"><span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l8 3v6c0 5.2-3.4 9.9-8 11-4.6-1.1-8-5.8-8-11V5z"/></svg></span><span>Vaultgate<small>Self-hosted privileged access by Cnova</small></span></div>
+  <nav aria-label="Footer"><a href="./">Overview</a> · <a href="features.html">Features</a> · <a href="specs.html">Specs</a> · <a href="workflow.html">Workflow</a> · <a href="platforms.html">Platforms</a> · <a href="security.html">Security</a> · <a href="compliance.html">Compliance</a> · <a href="deployment.html">Deployment</a> · <a href="faq.html">FAQ</a> · <a href="docs.html">Docs</a> · <a href="releases.html">Releases</a> · <a href="contact.html">Contact</a></nav>
+  <span class="copy">© 2026 Cnova</span>
+</footer>
+<script src="site.js?v=9830f1c2a0" defer></script>
+</body>
+</html>

@@ -17,7 +17,7 @@
 <header class="top">
   <a class="brand" href="./" aria-label="Vaultgate home"><span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l8 3v6c0 5.2-3.4 9.9-8 11-4.6-1.1-8-5.8-8-11V5z"/></svg></span><span class="brand-text">Vaultgate<small>by Cnova</small></span></a>
   <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
-  <nav class="links" id="nav" aria-label="Pages"><a href="./">Overview</a><a href="features.html">Features</a><a href="specs.html">Specs</a><a href="workflow.html">Workflow</a><a href="platforms.html">Platforms</a><a href="security.html">Security</a><a href="deployment.html">Deployment</a><a href="faq.html">FAQ</a><a href="docs.html" aria-current="page">Docs</a><a href="releases.html">Releases</a><a class="nav-cta" href="contact.html">Request a trial</a></nav>
+  <nav class="links" id="nav" aria-label="Pages"><a href="./">Overview</a><a href="features.html">Features</a><a href="specs.html">Specs</a><a href="workflow.html">Workflow</a><a href="platforms.html">Platforms</a><a href="security.html">Security</a><a href="compliance.html">Compliance</a><a href="deployment.html">Deployment</a><a href="faq.html">FAQ</a><a href="docs.html" aria-current="page">Docs</a><a href="releases.html">Releases</a><a class="nav-cta" href="contact.html">Request a trial</a></nav>
   <a class="btn primary small cta-top" href="contact.html">Request a trial</a>
 </header>
 <main>
@@ -73,6 +73,8 @@
       <a href="#failover">Automatic failover</a>
       <a href="#updates">Updates</a>
       <a href="#notifications">Email notifications</a>
+      <a href="#siem">Log forwarding to a SIEM</a>
+      <a href="#time">Time and NTP</a>
       <a href="#ports">Ports and services</a>
       <b>Troubleshooting</b>
       <a href="#ts-console">Console unreachable</a>
@@ -84,6 +86,7 @@
       <a href="#ts-failover">Failover paused</a>
       <a href="#ts-ssh">SSH client warnings</a>
       <a href="#ts-email">Emails don't arrive</a>
+      <a href="#ts-siem">Events don't reach the SIEM</a>
     </nav>
 
     <div class="kb-body">
@@ -264,13 +267,14 @@ sftp -P 2200 alice+root@web-01@vaultgate</code></pre>
           <li><b>Downloads</b> are set on the Storage page: <i>Encrypted</i> (default), <i>Plain</i> or <i>Off</i>. Changing it needs your password and MFA code, and is audited.</li>
           <li><b>Encrypted downloads:</b> the console shows a passphrase when you download. The <code>.vgrec</code> file's key also needs a secret that never leaves the appliance, so it opens only on the appliance that made it (or its standby, or an appliance restored from its backup), under <b>Sessions → Open recording file</b>. It's decrypted in your browser. Each download and each opening is in the audit log. Keep the passphrase apart from the file, and keep backups: if the appliance and its backups are lost, its files can't be opened.</li>
           <li><b>Plain downloads:</b> an evidence package with the recording, a player that works in any browser, the session details and typed commands.</li>
+          <li><b>Retention</b> is set on the Storage page. Recordings are kept forever until you set a period, and the shortest period is 180 days (CERT-In asks for 180 days of logs; 365 or more suits the DPDP Rules' one year). An appliance with a shorter period from before 0.1.0-48 is raised to 180 days, and that's audited. The audit log is never deleted.</li>
         </ul></article>
       <article id="audit"><h3>Audit and reports</h3>
         <ul>
           <li><b>Audit Log:</b> tabs for sign-ins, sessions, credentials, access, identity and configuration, in plain language, with CSV export. <b>Verify integrity</b> checks the whole chain.</li>
           <li><b>Reports:</b> a session report, an activity log and a PDF management report with usage, peak hours and findings such as failing rotations, stale passwords and administrators without MFA.</li>
         </ul>
-        <p class="kb-tip">The chain detects edits, but not removal of the newest events. Export the audit log regularly (CSV) into your SIEM or archive, for an off-box copy.</p></article>
+        <p class="kb-tip">The chain detects edits, but not removal of the newest events. Turn on <a href="#siem">log forwarding</a> so your SIEM holds an off-box copy as events happen.</p></article>
 
       <h2 class="kb-cat">Operations</h2>
       <article id="backup"><h3>Backup and restore</h3>
@@ -321,6 +325,33 @@ sftp -P 2200 alice+root@web-01@vaultgate</code></pre>
         </ul>
         <p class="kb-tip">Emails never contain passwords, keys, recordings or command output: they say what happened and link to the console. Approving or denying a request always needs a sign-in. Every email sent or failed is in the audit log.</p></article>
 
+      <article id="siem"><h3>Log forwarding to a SIEM</h3>
+        <p>From 0.1.0-48, Vaultgate sends every audit event, as it's written, to your syslog collector or SIEM. Set it up in the <b>appliance console → Log forwarding</b>; saving asks for your password and authenticator code again.</p>
+        <ol>
+          <li><b>Collector:</b> host name or address and port. Choose <b>TLS</b> (usually 6514) where you can; <b>TCP</b> or <b>UDP</b> (514) send in the clear. For TLS the collector's certificate is checked: for an internal CA, paste its certificate.</li>
+          <li><b>Framing</b> (TCP and TLS): <b>octet counting</b> (RFC 6587, the standard for syslog over TLS) or <b>one message per line</b>, whichever your collector expects.</li>
+          <li><b>Facility:</b> <code>authpriv</code> by default, or <code>log audit</code>, <code>local0</code> to <code>local7</code>.</li>
+          <li>When you first turn it on, choose <b>new events only</b>, or <b>the whole audit log first</b> to give your SIEM the history too. Then <b>Send a test message</b> and look for action <code>siem.test</code>.</li>
+        </ol>
+        <p>Each message is RFC 5424 syslog: app name <code>vaultgate</code>, the action as the message ID (such as <code>auth.login</code>), severity <i>informational</i> for successes and <i>warning</i> for failures. The body is JSON:</p>
+        <pre><code>{"id": 4182, "time": "2026-12-01T09:14:03.512000Z", "appliance": "pam01", "action": "credential.reveal",
+ "label": "Password revealed", "summary": "…", "actor": "asha", "target": "account:12", "outcome": "success",
+ "ip": "10.1.4.20", "detail": {…}, "hash": "…", "prev_hash": "…"}</code></pre>
+        <ul>
+          <li><b>Nothing lost:</b> Vaultgate remembers the last event the collector took. While it's unreachable, events wait on the appliance and are sent oldest first once it's back. Over TCP and TLS a batch counts as sent only after the collector has read it. UDP can lose messages unnoticed.</li>
+          <li><b>Checking the copy:</b> <code>hash</code> and <code>prev_hash</code> link each event to the one before. A gap in <code>id</code> or a broken link in your SIEM shows an event is missing; the appliance's <b>Verify integrity</b> checks the source.</li>
+          <li><b>Alerts:</b> if the collector stays unreachable for 5 minutes, an audit event and an email alert say so, and both consoles show a warning until it's back.</li>
+        </ul></article>
+
+      <article id="time"><h3>Time and NTP</h3>
+        <p>Audit timestamps and recordings are evidence, so the appliance's clock must be right. In India, CERT-In's directions ask that clocks be synchronised to the NTP servers of NIC or NPL, or to your own NTP servers synchronised to them.</p>
+        <ul>
+          <li>The <b>appliance console → Time</b> page shows whether the clock is synchronised, its offset and each NTP server's state.</li>
+          <li>Enter up to 8 servers and save; <b>Use NIC and NPL servers</b> fills in <code>samay1.nic.in</code>, <code>samay2.nic.in</code> and <code>time.nplindia.org</code>. Check CERT-In's current list, and that the appliance can reach UDP port 123. Empty means Debian's public pool.</li>
+          <li>The server's text console (<b>Time zone and NTP</b>) sets the same servers, and the time zone. Audit times are stored in UTC and shown in your browser's time.</li>
+          <li>If the clock loses sync, or drifts more than a second, an audit event and an email alert say so, and the consoles show a warning.</li>
+        </ul></article>
+
       <article id="ports"><h3>Ports and services</h3>
         <div class="table-wrap"><table>
           <thead><tr><th>Port</th><th>Direction</th><th>Used for</th></tr></thead>
@@ -332,6 +363,8 @@ sftp -P 2200 alice+root@web-01@vaultgate</code></pre>
             <tr><td class="mono">636/tcp</td><td>Out</td><td>Active Directory and LDAP over TLS</td></tr>
             <tr><td class="mono">Database ports</td><td>Out</td><td>Database rotation (1433, 1521, 3306, 5432, …)</td></tr>
             <tr><td class="mono">587, 465 or 25/tcp</td><td>Out</td><td>Your mail server, if email notifications are on</td></tr>
+            <tr><td class="mono">6514/tcp, 514/tcp or udp</td><td>Out</td><td>Your syslog collector or SIEM, if log forwarding is on</td></tr>
+            <tr><td class="mono">123/udp</td><td>Out</td><td>NTP servers</td></tr>
             <tr><td class="mono">443/tcp</td><td>Out</td><td>License check-in and OS updates (not needed offline)</td></tr>
           </tbody>
         </table></div>
@@ -392,6 +425,12 @@ sftp -P 2200 alice+root@web-01@vaultgate</code></pre>
           <li>The <b>Outbox</b> shows each email's last error. After fixing the settings, <b>Send now</b> retries it.</li>
           <li>The test arrives but alerts don't: check the alert recipients, and your spam filter. Many alerts of one kind arrive as one summary an hour later.</li>
         </ul></article>
+      <article id="ts-siem"><h3>Events don't reach the SIEM</h3>
+        <ul>
+          <li>Use <b>Send a test message</b> on the Log forwarding page: <b>can't reach</b> means a network or firewall problem, or nothing listening on that port; <b>isn't trusted</b> means the collector's CA certificate is missing.</li>
+          <li>The test arrives but events look garbled or run together: switch <b>framing</b>. Collectors that expect one message per line show octet-counted messages with a number in front.</li>
+          <li><b>Events waiting</b> on the page counts what the collector hasn't had yet. They're sent in order once it's reachable; nothing needs re-sending by hand.</li>
+        </ul></article>
     </div>
   </div>
 </section>
@@ -404,7 +443,7 @@ sftp -P 2200 alice+root@web-01@vaultgate</code></pre>
 </main>
 <footer class="foot">
   <div class="foot-brand"><span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l8 3v6c0 5.2-3.4 9.9-8 11-4.6-1.1-8-5.8-8-11V5z"/></svg></span><span>Vaultgate<small>Self-hosted privileged access by Cnova</small></span></div>
-  <nav aria-label="Footer"><a href="./">Overview</a> · <a href="features.html">Features</a> · <a href="specs.html">Specs</a> · <a href="workflow.html">Workflow</a> · <a href="platforms.html">Platforms</a> · <a href="security.html">Security</a> · <a href="deployment.html">Deployment</a> · <a href="faq.html">FAQ</a> · <a href="docs.html">Docs</a> · <a href="releases.html">Releases</a> · <a href="contact.html">Contact</a></nav>
+  <nav aria-label="Footer"><a href="./">Overview</a> · <a href="features.html">Features</a> · <a href="specs.html">Specs</a> · <a href="workflow.html">Workflow</a> · <a href="platforms.html">Platforms</a> · <a href="security.html">Security</a> · <a href="compliance.html">Compliance</a> · <a href="deployment.html">Deployment</a> · <a href="faq.html">FAQ</a> · <a href="docs.html">Docs</a> · <a href="releases.html">Releases</a> · <a href="contact.html">Contact</a></nav>
   <span class="copy">© 2026 Cnova</span>
 </footer>
 <script src="site.js?v=9830f1c2a0" defer></script>

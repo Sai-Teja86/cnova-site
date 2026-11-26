@@ -17,7 +17,7 @@
 <header class="top">
   <a class="brand" href="./" aria-label="Vaultgate home"><span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l8 3v6c0 5.2-3.4 9.9-8 11-4.6-1.1-8-5.8-8-11V5z"/></svg></span><span class="brand-text">Vaultgate<small>by Cnova</small></span></a>
   <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
-  <nav class="links" id="nav" aria-label="Pages"><a href="./">Overview</a><a href="features.html">Features</a><a href="specs.html">Specs</a><a href="workflow.html">Workflow</a><a href="platforms.html">Platforms</a><a href="security.html">Security</a><a href="deployment.html">Deployment</a><a href="faq.html">FAQ</a><a href="docs.html">Docs</a><a href="releases.html" aria-current="page">Releases</a><a class="nav-cta" href="contact.html">Request a trial</a></nav>
+  <nav class="links" id="nav" aria-label="Pages"><a href="./">Overview</a><a href="features.html">Features</a><a href="specs.html">Specs</a><a href="workflow.html">Workflow</a><a href="platforms.html">Platforms</a><a href="security.html">Security</a><a href="compliance.html">Compliance</a><a href="deployment.html">Deployment</a><a href="faq.html">FAQ</a><a href="docs.html">Docs</a><a href="releases.html" aria-current="page">Releases</a><a class="nav-cta" href="contact.html">Request a trial</a></nav>
   <a class="btn primary small cta-top" href="contact.html">Request a trial</a>
 </header>
 <main>
@@ -34,14 +34,14 @@
     <div class="rel-current">
       <div>
         <p class="rel-tag">Current release</p>
-        <h2>Vaultgate 0.1.0-47</h2>
+        <h2>Vaultgate 0.1.0-48</h2>
         <p class="sub">Released 26 November 2026. Install it from the Updates page of the appliance console. Failover pairs still on 0.1.0-29 or older: update the standby first, then the primary.</p>
       </div>
       <dl class="rel-files">
-        <dt>Installer</dt><dd><code>vaultgate-0.1.0-47-amd64.iso</code> · 438 MB</dd>
-        <dt>SHA-256</dt><dd><code class="hash">223b730fa96bb88f0ed8ab220e219464d88fa00d2a7802a829bd7b3ef1e3f2a1</code></dd>
-        <dt>Update</dt><dd><code>vaultgate-0.1.0-47.vgupdate</code> · 49 MB</dd>
-        <dt>SHA-256</dt><dd><code class="hash">d13cd171c8cf7c0b006366ab56fe4340ad7a19c13365624e77cac84e757f57cc</code></dd>
+        <dt>Installer</dt><dd><code>vaultgate-0.1.0-48-amd64.iso</code> · 438 MB</dd>
+        <dt>SHA-256</dt><dd><code class="hash">b13386771721b8a5a4d8a5e0d7d9564bf9f7f3df7d3888ee15481bfc3dbc94cd</code></dd>
+        <dt>Update</dt><dd><code>vaultgate-0.1.0-48.vgupdate</code> · 49 MB</dd>
+        <dt>SHA-256</dt><dd><code class="hash">517e8320a518538183094b74919f84045ca418a8218626341d3d6f079873c6b7</code></dd>
       </dl>
     </div>
   </div>
@@ -63,6 +63,14 @@
   <div class="wrap">
     <h2>Release history</h2>
     <div class="rel-list">
+
+      <article class="rel"><header><h3>0.1.0-48</h3><time datetime="2026-11-26">26 Nov 2026</time><span class="pill ok">New</span></header>
+        <ul>
+          <li><b>Log forwarding to your SIEM.</b> Every audit event goes to your syslog collector or SIEM as it happens: RFC 5424 syslog with a JSON body, over TLS, TCP or UDP. Each message carries the event's tamper-evident chain hash, so your SOC's copy can be checked. While the collector is unreachable, events wait on the appliance and are sent in order once it's back. Set it up in the appliance console under Log forwarding.</li>
+          <li><b>Time page.</b> See whether the appliance clock is synchronised, its offset and each NTP server's state, and set the NTP servers from the web console, with NIC and NPL's servers in one click. Losing sync raises an alert, as CERT-In's directions expect synchronised clocks.</li>
+          <li><b>Recording retention of at least 180 days.</b> Retention can no longer be set below 180 days, in line with CERT-In's log retention. Shorter periods set earlier are raised to 180 days, and the change is audited. The audit log itself is never deleted.</li>
+          <li>Email alerts for log forwarding failures and clock problems.</li>
+        </ul></article>
 
       <article class="rel"><header><h3>0.1.0-47</h3><time datetime="2026-11-26">26 Nov 2026</time><span class="pill ok">New</span></header>
         <ul>
@@ -183,7 +191,7 @@
 </main>
 <footer class="foot">
   <div class="foot-brand"><span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l8 3v6c0 5.2-3.4 9.9-8 11-4.6-1.1-8-5.8-8-11V5z"/></svg></span><span>Vaultgate<small>Self-hosted privileged access by Cnova</small></span></div>
-  <nav aria-label="Footer"><a href="./">Overview</a> · <a href="features.html">Features</a> · <a href="specs.html">Specs</a> · <a href="workflow.html">Workflow</a> · <a href="platforms.html">Platforms</a> · <a href="security.html">Security</a> · <a href="deployment.html">Deployment</a> · <a href="faq.html">FAQ</a> · <a href="docs.html">Docs</a> · <a href="releases.html">Releases</a> · <a href="contact.html">Contact</a></nav>
+  <nav aria-label="Footer"><a href="./">Overview</a> · <a href="features.html">Features</a> · <a href="specs.html">Specs</a> · <a href="workflow.html">Workflow</a> · <a href="platforms.html">Platforms</a> · <a href="security.html">Security</a> · <a href="compliance.html">Compliance</a> · <a href="deployment.html">Deployment</a> · <a href="faq.html">FAQ</a> · <a href="docs.html">Docs</a> · <a href="releases.html">Releases</a> · <a href="contact.html">Contact</a></nav>
   <span class="copy">© 2026 Cnova</span>
 </footer>
 <script src="site.js?v=9830f1c2a0" defer></script>

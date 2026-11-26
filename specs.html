@@ -17,7 +17,7 @@
 <header class="top">
   <a class="brand" href="./" aria-label="Vaultgate home"><span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l8 3v6c0 5.2-3.4 9.9-8 11-4.6-1.1-8-5.8-8-11V5z"/></svg></span><span class="brand-text">Vaultgate<small>by Cnova</small></span></a>
   <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
-  <nav class="links" id="nav" aria-label="Pages"><a href="./">Overview</a><a href="features.html">Features</a><a href="specs.html" aria-current="page">Specs</a><a href="workflow.html">Workflow</a><a href="platforms.html">Platforms</a><a href="security.html">Security</a><a href="deployment.html">Deployment</a><a href="faq.html">FAQ</a><a href="docs.html">Docs</a><a href="releases.html">Releases</a><a class="nav-cta" href="contact.html">Request a trial</a></nav>
+  <nav class="links" id="nav" aria-label="Pages"><a href="./">Overview</a><a href="features.html">Features</a><a href="specs.html" aria-current="page">Specs</a><a href="workflow.html">Workflow</a><a href="platforms.html">Platforms</a><a href="security.html">Security</a><a href="compliance.html">Compliance</a><a href="deployment.html">Deployment</a><a href="faq.html">FAQ</a><a href="docs.html">Docs</a><a href="releases.html">Releases</a><a class="nav-cta" href="contact.html">Request a trial</a></nav>
   <a class="btn primary small cta-top" href="contact.html">Request a trial</a>
 </header>
 <main>
@@ -67,6 +67,8 @@
           <tr><td class="mono">636/tcp</td><td>Outbound</td><td>Active Directory and LDAP over TLS (389 with StartTLS also supported)</td></tr>
           <tr><td class="mono">1433, 1521, 3306, 5432, …</td><td>Outbound</td><td>Databases, on each one's own port</td></tr>
           <tr><td class="mono">587, 465 or 25/tcp</td><td>Outbound</td><td>Your mail server, when email notifications are on</td></tr>
+          <tr><td class="mono">6514/tcp, 514/tcp or udp</td><td>Outbound</td><td>Your syslog collector or SIEM, when log forwarding is on</td></tr>
+          <tr><td class="mono">123/udp</td><td>Outbound</td><td>NTP servers (NIC and NPL in India, or your own)</td></tr>
           <tr><td class="mono">443/tcp</td><td>Outbound</td><td>OpenID Connect provider; license check-in once a day (not needed with offline activation)</td></tr>
         </tbody>
       </table></div>
@@ -143,7 +145,7 @@
         <tr><th>Indexing</th><td>Commands and typed lines searchable across all recordings</td></tr>
         <tr><th>Kept out</th><td>Passwords typed by Vaultgate, and the contents of transferred files</td></tr>
         <tr><th>Compression</th><td>gzip, replacing the original only once the compressed copy has been checked against the sealed hash</td></tr>
-        <tr><th>Retention</th><td>Off until an administrator sets a period; a preview shows what would be deleted</td></tr>
+        <tr><th>Retention</th><td>Kept forever until an administrator sets a period of at least 180 days; a preview shows what would be deleted</td></tr>
         <tr><th>Disk protection</th><td>Alerts as space runs low; new sessions refused before the disk fills, never run unrecorded</td></tr>
         <tr><th>Downloads</th><td>One setting: off, plain evidence package, or encrypted (default). Encrypted files open only on the appliance that made it, or its standby or restored copy, with each opening audited</td></tr>
       </tbody></table></div>
@@ -156,6 +158,9 @@
         <tr><th>Tamper evidence</th><td>HMAC-SHA256 chain with a one-click integrity check</td></tr>
         <tr><th>Views</th><td>Sign-ins, sessions, credentials, access, identity, configuration; session activity per command</td></tr>
         <tr><th>Exports</th><td>CSV of every view; PDF management report with charts and findings</td></tr>
+        <tr><th>Retention</th><td>Kept for the life of the appliance; never deleted by retention settings</td></tr>
+        <tr><th>SIEM forwarding</th><td>Every event as it happens, RFC 5424 syslog with a JSON body carrying the chain hash; TLS, TCP or UDP; octet-counted or line framing; nothing lost while the collector is down</td></tr>
+        <tr><th>Timestamps</th><td>UTC, from a clock synchronised by NTP; servers set and checked from the console, alert on loss of sync</td></tr>
       </tbody></table></div>
     </div>
 
@@ -200,7 +205,7 @@
         <tr><th>Certificates</th><td>Checked by default; an internal CA can be added</td></tr>
         <tr><th>Sign-in</th><td>Optional; the password is sealed like vault secrets</td></tr>
         <tr><th>To people</th><td>New access requests to each approver; decisions to the requester</td></tr>
-        <tr><th>Alerts</th><td>Rotation failures, JIT removal failures, disk space, integrity and audit chain, license, failover and standby sync, keyword-guard terminations; each can be switched off</td></tr>
+        <tr><th>Alerts</th><td>Rotation failures, JIT removal failures, disk space, integrity and audit chain, license, failover and standby sync, keyword-guard terminations, SIEM forwarding failures, clock out of sync; each can be switched off</td></tr>
         <tr><th>Grouping</th><td>Further alerts of one kind within an hour sent as one summary</td></tr>
         <tr><th>Delivery</th><td>Background outbox, retried for 24 hours; console warning while email isn't getting through; every send audited</td></tr>
         <tr><th>Content</th><td>No passwords, keys, recordings or command output; approval always needs a sign-in</td></tr>
@@ -240,7 +245,7 @@
 </main>
 <footer class="foot">
   <div class="foot-brand"><span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l8 3v6c0 5.2-3.4 9.9-8 11-4.6-1.1-8-5.8-8-11V5z"/></svg></span><span>Vaultgate<small>Self-hosted privileged access by Cnova</small></span></div>
-  <nav aria-label="Footer"><a href="./">Overview</a> · <a href="features.html">Features</a> · <a href="specs.html">Specs</a> · <a href="workflow.html">Workflow</a> · <a href="platforms.html">Platforms</a> · <a href="security.html">Security</a> · <a href="deployment.html">Deployment</a> · <a href="faq.html">FAQ</a> · <a href="docs.html">Docs</a> · <a href="releases.html">Releases</a> · <a href="contact.html">Contact</a></nav>
+  <nav aria-label="Footer"><a href="./">Overview</a> · <a href="features.html">Features</a> · <a href="specs.html">Specs</a> · <a href="workflow.html">Workflow</a> · <a href="platforms.html">Platforms</a> · <a href="security.html">Security</a> · <a href="compliance.html">Compliance</a> · <a href="deployment.html">Deployment</a> · <a href="faq.html">FAQ</a> · <a href="docs.html">Docs</a> · <a href="releases.html">Releases</a> · <a href="contact.html">Contact</a></nav>
   <span class="copy">© 2026 Cnova</span>
 </footer>
 <script src="site.js?v=9830f1c2a0" defer></script>
