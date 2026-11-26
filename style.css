@@ -273,3 +273,16 @@ td.mono { font-family: ui-monospace, Menlo, Consolas, monospace; white-space: no
 @media (max-width: 420px) {
   .brand small { display: none; }
 }
+
+/* Compliance page: one card per requirement, what's asked beside how Vaultgate answers it */
+.reqs { display: grid; gap: 12px; margin-top: 16px; }
+.req { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); background: var(--panel); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: var(--radius); overflow: hidden; }
+.req-ask, .req-how { padding: 16px 20px; }
+.req-ask { background: var(--panel-2); font-weight: 600; border-right: 1px solid var(--border); }
+.req-label { display: block; font-size: 11.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; color: var(--brass); }
+.req-how .req-label { color: var(--accent); }
+@media (max-width: 640px) {
+  .req { grid-template-columns: 1fr; }
+  .req-ask { border-right: 0; border-bottom: 1px solid var(--border); }
+  .req-ask, .req-how { padding: 14px 16px; }
+}
