@@ -75,6 +75,7 @@
       <a href="#notifications">Email notifications</a>
       <a href="#siem">Log forwarding to a SIEM</a>
       <a href="#time">Time and NTP</a>
+      <a href="#nettools">Network tools</a>
       <a href="#ports">Ports and services</a>
       <b>Troubleshooting</b>
       <a href="#ts-console">Console unreachable</a>
@@ -350,7 +351,18 @@ sftp -P 2200 alice+root@web-01@vaultgate</code></pre>
           <li>Enter up to 8 servers and save; <b>Use NIC and NPL servers</b> fills in <code>samay1.nic.in</code>, <code>samay2.nic.in</code> and <code>time.nplindia.org</code>. Check CERT-In's current list, and that the appliance can reach UDP port 123. Empty means Debian's public pool.</li>
           <li>The server's text console (<b>Time zone and NTP</b>) sets the same servers, and the time zone. Audit times are stored in UTC and shown in your browser's time.</li>
           <li>If the clock loses sync, or drifts more than a second, an audit event and an email alert say so, and the consoles show a warning.</li>
+          <li>No time server reachable, as on an isolated network? While the clock isn't synchronised, the Time page offers <b>Set the clock from this computer</b>: it shows this computer's time beside the appliance's, and sets the appliance to it, to within about a second. It asks for your password again and is recorded in the audit log. A time server, once one answers, takes over again.</li>
         </ul></article>
+
+      <article id="nettools"><h3>Network tools</h3>
+        <p>When a session, password rotation or test login fails, first check that the appliance can reach the server. The <b>appliance console → Network tools</b> page runs the checks from the appliance itself, which can see a different network from your own computer.</p>
+        <ul>
+          <li><b>Ping</b>: ICMP echo, 1 to 10 packets. No reply doesn't always mean the server is down: many servers and firewalls drop ping.</li>
+          <li><b>Traceroute</b>: the routers on the way, over ICMP or UDP. A <code>*</code> row is a router that doesn't answer, which is common; it matters only if the trace stops there.</li>
+          <li><b>Port check</b>: opens a TCP connection to the port Vaultgate uses for the asset and shows what the service says first (an SSH server's version, for example). "Refused" means the server answered but nothing listens on that port; "no answer" usually means a firewall drops it.</li>
+          <li><b>DNS lookup</b>: resolves a name with the appliance's DNS servers, or finds the name of an address.</li>
+        </ul>
+        <p>Pick an asset to fill in its address and port. Only administrators can run checks, at most three at a time, and each one is recorded in the audit log.</p></article>
 
       <article id="ports"><h3>Ports and services</h3>
         <div class="table-wrap"><table>

@@ -34,14 +34,14 @@
     <div class="rel-current">
       <div>
         <p class="rel-tag">Current release</p>
-        <h2>Vaultgate 0.1.0-49</h2>
-        <p class="sub">Released 26 November 2026. Install it from the Updates page of the appliance console. Failover pairs still on 0.1.0-29 or older: update the standby first, then the primary.</p>
+        <h2>Vaultgate 0.1.0-50</h2>
+        <p class="sub">Released 27 November 2026. Install it from the Updates page of the appliance console. Failover pairs still on 0.1.0-29 or older: update the standby first, then the primary.</p>
       </div>
       <dl class="rel-files">
-        <dt>Installer</dt><dd><code>vaultgate-0.1.0-49-amd64.iso</code> · 438 MB</dd>
-        <dt>SHA-256</dt><dd><code class="hash">38b74c0dd0dcb7cda5e53fe24ec1e6ed34cb5ada6e34a1b34a8dad84fbc99090</code></dd>
-        <dt>Update</dt><dd><code>vaultgate-0.1.0-49.vgupdate</code> · 49 MB</dd>
-        <dt>SHA-256</dt><dd><code class="hash">f56edafc766f6a96b7361f98fdccbd192bd889dfd7c2a2c6b693ae57794e5f8a</code></dd>
+        <dt>Installer</dt><dd><code>vaultgate-0.1.0-50-amd64.iso</code> · 438 MB</dd>
+        <dt>SHA-256</dt><dd><code class="hash">3f6df6fc8048ef0ce0960482161866d29323e9cc99da7d8707815164d9abc923</code></dd>
+        <dt>Update</dt><dd><code>vaultgate-0.1.0-50.vgupdate</code> · 49 MB</dd>
+        <dt>SHA-256</dt><dd><code class="hash">aea9abb7ad09220073b668e16877487356f7a8cce9a45890a3f65033733e1e3b</code></dd>
       </dl>
     </div>
   </div>
@@ -63,6 +63,17 @@
   <div class="wrap">
     <h2>Release history</h2>
     <div class="rel-list">
+
+      <article class="rel"><header><h3>0.1.0-50</h3><time datetime="2026-11-27">27 Nov 2026</time><span class="pill ok">New</span></header>
+        <ul>
+          <li><b>Network tools.</b> A new page in the appliance console runs ping, traceroute, a port check and a DNS lookup from the appliance, to find out why a server can't be reached. Pick an asset to fill in its address and port; results appear as they come, and each check is audited.</li>
+          <li><b>A clearer access policy editor.</b> Policies are now made on a page of their own, step by step: who, to what, how, when, and optional session restrictions. Options appear only when they apply, and a summary says in plain words what the policy will allow.</li>
+          <li><b>Assets and Accounts.</b> The Vault opens into separate Assets and Accounts pages, each with a search box.</li>
+          <li><b>Password Policies page.</b> Rotation policies have their own page, where each policy chooses its accounts, searchable by name, asset or tag.</li>
+          <li><b>Regrouped menu</b> (Workspace, Administration, Configuration, Oversight, Appliance) with an icon for each page, so the collapsed menu still shows where each link goes.</li>
+          <li><b>Set the clock from your computer.</b> Where no time server can be reached, the Time page sets the appliance's clock from your browser's, to within about a second. It's refused while the clock is synchronised, and audited.</li>
+          <li>The landing page has the sign-in form beside the introduction.</li>
+        </ul></article>
 
       <article class="rel"><header><h3>0.1.0-49</h3><time datetime="2026-11-26">26 Nov 2026</time><span class="pill ok">New</span></header>
         <ul>
