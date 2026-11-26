@@ -215,6 +215,38 @@ td.mono { font-family: ui-monospace, Menlo, Consolas, monospace; white-space: no
   .line { opacity: 1; transform: none; }
 }
 
+/* features: the detail under each summary */
+.feature-body { min-width: 0; }
+.how { margin-top: 18px; border: 1px solid var(--border); border-radius: 10px; background: var(--panel); }
+.band.alt .how { background: var(--panel-2); }
+.how summary { cursor: pointer; list-style: none; padding: 10px 16px; font-weight: 600; color: var(--accent); position: relative; padding-left: 38px; }
+.how summary::-webkit-details-marker { display: none; }
+.how summary::before { content: "+"; position: absolute; left: 16px; top: 7px; font-size: 20px; transition: transform .2s; }
+.how[open] summary::before { transform: rotate(45deg); }
+.how[open] summary { border-bottom: 1px solid var(--border); }
+.how > :not(summary) { margin-inline: 18px; }
+.how > p:first-of-type, .how > ol:first-of-type, .how > ul:first-of-type { margin-top: 14px; }
+.how > :last-child { margin-bottom: 16px; }
+.how p, .how li { font-size: 15px; color: var(--muted); }
+.how b { color: var(--text); }
+.how ol, .how ul { padding-left: 22px; display: grid; gap: 8px; margin-bottom: 1em; }
+.how code { overflow-wrap: anywhere; }
+
+/* specifications */
+.spec-actions { margin-top: 18px; }
+.spec-block { padding: 28px 0; border-top: 1px solid var(--border); scroll-margin-top: 80px; }
+.spec-block:first-child { border-top: 0; padding-top: 0; }
+.spec-block h2 { font-size: 24px; }
+.spec-block tbody th { width: 28%; min-width: 150px; text-transform: none; letter-spacing: 0; font-size: 14.5px; color: var(--text); font-weight: 600; }
+.spec-block td code { overflow-wrap: anywhere; }
+@media (max-width: 640px) {
+  .spec-block tbody tr { display: grid; }
+  .spec-block tbody th { width: auto; border-bottom: 0; padding-bottom: 2px; }
+  .spec-block tbody td { padding-top: 2px; }
+  .spec-block thead { display: none; }
+  .spec-block tbody td.mono { padding-top: 12px; white-space: normal; background: var(--panel-2); font-weight: 600; }
+}
+
 @media (max-width: 1180px) {
   .menu-btn { display: block; }
   .cta-top { display: none; }

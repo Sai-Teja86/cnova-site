@@ -3,29 +3,29 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Features and specifications · Vaultgate</title>
+<title>Features · Vaultgate</title>
 <meta name="description" content="Every Vaultgate capability in detail: vault, rotation, brokered sessions, recording, policies, identity, discovery, the Credential API, reports and high availability.">
-<meta property="og:title" content="Features and specifications · Vaultgate">
+<meta property="og:title" content="Features · Vaultgate">
 <meta property="og:description" content="Every Vaultgate capability in detail: vault, rotation, brokered sessions, recording, policies, identity, discovery, the Credential API, reports and high availability.">
 <meta property="og:url" content="https://cnova.in/features.html">
 <meta property="og:type" content="website">
 <link rel="canonical" href="https://cnova.in/features.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f766e'/%3E%3Cpath d='M16 6l8 3v6c0 5-3.4 9.3-8 11-4.6-1.7-8-6-8-11V9z' fill='white'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="style.css?v=9c5533f5d0">
+<link rel="stylesheet" href="style.css?v=623082c267">
 </head>
 <body>
 <header class="top">
   <a class="brand" href="./" aria-label="Vaultgate home"><span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l8 3v6c0 5.2-3.4 9.9-8 11-4.6-1.1-8-5.8-8-11V5z"/></svg></span><span class="brand-text">Vaultgate<small>by Cnova</small></span></a>
   <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
-  <nav class="links" id="nav" aria-label="Pages"><a href="./">Overview</a><a href="features.html" aria-current="page">Features</a><a href="workflow.html">Workflow</a><a href="platforms.html">Platforms</a><a href="security.html">Security</a><a href="deployment.html">Deployment</a><a href="faq.html">FAQ</a><a href="docs.html">Docs</a><a href="releases.html">Releases</a><a class="nav-cta" href="contact.html">Request a trial</a></nav>
+  <nav class="links" id="nav" aria-label="Pages"><a href="./">Overview</a><a href="features.html" aria-current="page">Features</a><a href="specs.html">Specs</a><a href="workflow.html">Workflow</a><a href="platforms.html">Platforms</a><a href="security.html">Security</a><a href="deployment.html">Deployment</a><a href="faq.html">FAQ</a><a href="docs.html">Docs</a><a href="releases.html">Releases</a><a class="nav-cta" href="contact.html">Request a trial</a></nav>
   <a class="btn primary small cta-top" href="contact.html">Request a trial</a>
 </header>
 <main>
 <section class="head">
   <div class="orb orb-a" aria-hidden="true"></div>
-  <p class="eyebrow">Features and specifications</p>
+  <p class="eyebrow">Features</p>
   <h1>Everything Vaultgate does</h1>
-  <p class="lead">A complete privileged access platform in one appliance. Jump to an area:</p>
+  <p class="lead">A complete privileged access platform in one appliance. Each area opens with a summary; open <i>How it works</i> for the detail, or see the <a href="specs.html">technical specifications</a>. Jump to an area:</p>
   <nav class="toc" aria-label="Feature areas">
     <a href="#vault">Vault</a><a href="#rotation">Rotation</a><a href="#sessions">Sessions</a><a href="#control">Session control</a>
     <a href="#audit">Recording and audit</a><a href="#recordings">How recordings are handled</a><a href="#policies">Policies</a><a href="#identity">Identity</a>
@@ -38,6 +38,7 @@
 
     <div class="feature" id="vault">
       <div><span class="tag">Vault</span><h2>Credential vault and checkout</h2><p class="intro">One encrypted home for every privileged password and key.</p></div>
+      <div class="feature-body">
       <ul class="ticks">
         <li>AES-256-GCM envelope encryption: a separate key for every secret, wrapped by the appliance's master key</li>
         <li>Each secret is bound to its own record, so it can't be copied onto another account</li>
@@ -48,24 +49,47 @@
         <li>Control accounts: the administrator logins used for rotation are kept apart from users and seen by administrators only</li>
         <li>SSH keys as well as passwords</li>
       </ul>
+      <details class="how"><summary>How it works</summary>
+<p>When a password or key is saved, Vaultgate makes a new random 256-bit data key for it, encrypts the secret with AES-256-GCM, and stores the data key only in wrapped form, encrypted by the appliance's master key. The record's identity is part of the encryption, so a ciphertext copied onto another account won't open.</p>
+<ol>
+<li><b>Checkout.</b> A user with the reveal right gives a reason and a duration. The account is locked to them, so nobody else can check it out meanwhile, and the reveal is audited.</li>
+<li><b>Check-in.</b> The user returns it, or the time runs out and Vaultgate returns it. If the account's rotation policy says so, the password changes straight away, so what the user saw no longer works.</li>
+<li><b>History.</b> Each change adds a version, encrypted the same way, with who made it and why: a scheduled rotation, a check-in, or an edit.</li>
+</ol>
+<p><b>Linked accounts</b> let one domain account serve many servers: it's stored and rotated once, and each server it's linked to offers it for sessions. <b>Control accounts</b> are the administrator logins Vaultgate uses for rotation and account creation. They're seen by administrators only, never granted to users, and their own rotation is off until an administrator allows it.</p>
+      </details>
+      </div>
     </div>
 
     <div class="feature" id="rotation">
       <div><span class="tag">Rotation</span><h2>Automatic password rotation</h2><p class="intro">Passwords change by themselves and are checked every time.</p></div>
+      <div class="feature-body">
       <ul class="ticks">
         <li>Named rotation policies: schedule, length, symbols and characters to avoid</li>
         <li>Rotate after each use, for one-time passwords</li>
         <li>Changed by the account itself, or by a control account for accounts whose password nobody knows</li>
-        <li>Each new password is checked by signing in before the old one is dropped</li>
+        <li>Each new password is checked with a real sign-in, and failures are flagged</li>
         <li>Linux and Unix, Windows local and domain accounts, 9 database engines, Cisco IOS and FortiGate</li>
         <li>Custom platforms: write the commands for any SSH device as send and expect steps</li>
         <li>On-demand rotation, and failures shown with the reason</li>
         <li><a href="platforms.html">Full list of supported systems →</a></li>
       </ul>
+      <details class="how"><summary>How it works</summary>
+<ol>
+<li><b>Due.</b> Every minute the scheduler looks for accounts whose rotation policy is due: a number of days since the last change, or a use that just ended.</li>
+<li><b>New password.</b> It's generated to the policy: 12 to 128 characters, symbols or not, and without characters the target can't take.</li>
+<li><b>Change.</b> Vaultgate signs in to the target and changes it: as the account itself, or through a control account for accounts whose password nobody knows. Each platform uses its own command, such as <code>passwd</code>, <code>ALTER LOGIN</code> or an LDAPS password modify.</li>
+<li><b>Store.</b> The new password becomes the current version. The previous one stays in the history.</li>
+<li><b>Check.</b> Vaultgate signs in with the new password. If that works the rotation is marked successful; if not, it's marked unverified with the reason, for an administrator to look at.</li>
+</ol>
+<p><b>Lockout safety:</b> if the target refuses the password Vaultgate holds, automatic rotation of that account stops rather than retrying, so it can't lock the account out. It resumes once the password is corrected or a test login passes. During a failover, a primary that has lost contact with both its standby and witness also holds rotations, so two appliances can never set different passwords.</p>
+      </details>
+      </div>
     </div>
 
     <div class="feature" id="sessions">
       <div><span class="tag">Remote access</span><h2>Brokered sessions</h2><p class="intro">Users connect without ever receiving the password.</p></div>
+      <div class="feature-body">
       <ul class="ticks">
         <li>SSH in the browser, with the password or key injected by the gateway</li>
         <li>RDP and VNC desktops in the browser, with nothing to install</li>
@@ -76,13 +100,26 @@
         <li>Maximum session length and automatic end of idle sessions</li>
         <li>Each session opens in its own browser tab</li>
       </ul>
+      <details class="how"><summary>How it works</summary>
+<ol>
+<li><b>Choose.</b> The user picks an account and server from <i>My access</i>. The policy is checked: rights, time window, approval.</li>
+<li><b>Ticket.</b> The browser receives a single-use ticket valid for 30 seconds. It carries no password.</li>
+<li><b>Connect.</b> The gateway checks the policy again, then opens the connection to the server itself: SSH with the host key pinned at first use, or RDP and VNC through the appliance's own remote desktop engine, with the RDP certificate validated.</li>
+<li><b>Sign in.</b> The gateway types the password or presents the key. The user sees the server, never the credential.</li>
+<li><b>During.</b> Everything passes through the gateway, which applies the policy's controls, records the session and lets administrators watch or end it.</li>
+<li><b>End.</b> At logout, after 15 minutes idle, at the policy's maximum length, or when access is withdrawn. If the policy rotates after use, the password changes next.</li>
+</ol>
+<p><b>Native SSH:</b> people who prefer their own terminal connect to the gateway on port 2200 with their Vaultgate login: <code>ssh alice@vaultgate</code> shows a menu of what they may reach, and <code>ssh alice+root@web-01@vaultgate</code> goes straight there. <code>scp</code>, <code>sftp</code> and <code>rsync</code> work the same way, under the same policy and recording.</p>
+      </details>
+      </div>
     </div>
 
     <div class="feature" id="control">
       <div><span class="tag">Session control</span><h2>What users can and can't do</h2><p class="intro">Stop risky actions before they reach the server.</p></div>
+      <div class="feature-body">
       <ul class="ticks">
         <li>Command blocklists per policy, checked before the command reaches the server</li>
-        <li>Works for Linux shells and for Windows cmd and PowerShell over SSH, including chained commands</li>
+        <li>Works for Linux shells and for Windows cmd and PowerShell over SSH, with each chained Windows command checked on its own</li>
         <li>Keyword guard for RDP, VNC and applications: blocked words typed in a graphical session are stopped</li>
         <li>Clipboard allowed or blocked per policy</li>
         <li>File upload and download as separate permissions, off by default</li>
@@ -90,10 +127,22 @@
         <li>Each transferred file's name, size and SHA-256 logged</li>
         <li>Printing disabled in remote desktops</li>
       </ul>
+      <details class="how"><summary>How it works</summary>
+<p>Controls are set per policy. When several policies apply to a session, their blocked commands and words add up.</p>
+<ul>
+<li><b>Commands (SSH).</b> The gateway rebuilds each line as it's typed and, when Enter is pressed, matches it against the policy's patterns. A blocked line is cancelled instead of sent, the user sees why, and the attempt is audited. On Windows servers every command in a chained line is checked on its own, program paths are reduced to the program name, and <code>cmd /c</code> and <code>powershell -Command</code> wrappers are unwrapped. Like any typed-line filter it complements least-privilege accounts rather than replacing them, which is what personal JIT accounts give you.</li>
+<li><b>Keyword guard (RDP, VNC, applications).</b> Typed text is checked as it's entered. The policy chooses whether a match warns the user or ends the session; either way it's audited.</li>
+<li><b>Files (RDP).</b> Uploads and downloads are separate rights. Each file is checked on the way: its type is read from its contents, not its name, and text, Office and zip files are searched for blocked words. Allowed transfers are logged with name, size and SHA-256.</li>
+<li><b>Files (SSH).</b> SCP and SFTP through the gateway need their own right in the policy.</li>
+<li><b>Clipboard and printing.</b> The clipboard is allowed or blocked per policy. Printing from remote desktops is off.</li>
+</ul>
+      </details>
+      </div>
     </div>
 
     <div class="feature" id="audit">
       <div><span class="tag">Evidence</span><h2>Recording, monitoring and audit</h2><p class="intro">See everything, change nothing unnoticed.</p></div>
+      <div class="feature-body">
       <ul class="ticks">
         <li>SSH, RDP and VNC sessions recorded and replayed in the browser, with seeking (<a href="#recordings">how recordings are handled</a>)</li>
         <li>Each recording's SHA-256 sealed into the audit trail and checked on replay</li>
@@ -104,6 +153,16 @@
         <li>CSV export of every view, and a PDF management report with charts and findings</li>
         <li>Recording compression, retention periods, and disk-space alerts; sessions refused before the disk fills</li>
       </ul>
+      <details class="how"><summary>How it works</summary>
+<ul>
+<li><b>Recording.</b> SSH sessions are recorded as text, so a replay is sharp at any size and every command can be searched. Remote desktop sessions are recorded as the screen stream. Both replay in the browser with a timeline.</li>
+<li><b>Sealing.</b> When a session ends, its recording's SHA-256 is written into the audit trail. A replay recomputes it, and a mismatch is shown.</li>
+<li><b>Searching.</b> Commands and typed lines are indexed per session, so an auditor can find every session where someone ran a given command and jump to that moment.</li>
+<li><b>The audit chain.</b> Every event carries an HMAC-SHA256 over its own content and the previous event's. Changing, deleting or reordering any entry breaks the chain from that point, and the integrity check shows the first broken entry.</li>
+<li><b>Reporting.</b> Each audit view exports to CSV for your SIEM or archive. The management report summarises access, sessions, rotations and findings as a PDF.</li>
+</ul>
+      </details>
+      </div>
     </div>
 
   </div>
@@ -137,6 +196,7 @@
 
     <div class="feature" id="policies">
       <div><span class="tag">Least privilege</span><h2>Access policies and just-in-time access</h2><p class="intro">Nobody gets anything until a policy says so.</p></div>
+      <div class="feature-body">
       <ul class="ticks">
         <li>Deny by default</li>
         <li>Grant to a user, role or directory group, for an account, a server, a tag or everything</li>
@@ -147,10 +207,21 @@
         <li>Personal JIT accounts: each user or vendor gets their own account on Linux and Windows servers, in Active Directory (allowed only on the covered servers) or on a database, created when they connect and removed when access ends</li>
         <li>Roles: administrator, approver, auditor and user</li>
       </ul>
+      <details class="how"><summary>How it works</summary>
+<p>A policy says <i>who</i> (a user, role, directory group or Vaultgate group) may do <i>what</i> (open sessions, see passwords, or both) on <i>which targets</i> (one account, a server, a tag, or everything) and <i>when</i> (days, hours, maximum session length). With no matching policy, the answer is no.</p>
+<ol>
+<li><b>Direct access.</b> If a matching policy needs no approval, the user connects.</li>
+<li><b>Approval.</b> If approval is needed, the user asks with a reason and a duration. An approver decides; nobody can approve their own request. Access opens for the approved time only.</li>
+<li><b>Withdrawal.</b> Revoking a grant ends the sessions that depend on it at once.</li>
+</ol>
+<p><b>Personal JIT accounts:</b> instead of sharing one account, a policy can give each person their own. At the first connection Vaultgate creates the account on the server, in Active Directory or on the database, with the groups or roles the policy names and a random password it keeps to itself. The person works under their own name, so the server's own logs show who did what. Ten minutes after their last session ends, or as soon as access is withdrawn, the account is removed; a removal that fails is retried every five minutes and shown to administrators until it succeeds.</p>
+      </details>
+      </div>
     </div>
 
     <div class="feature" id="identity">
       <div><span class="tag">Identity</span><h2>Sign-in and directories</h2><p class="intro">Use the accounts your people already have.</p></div>
+      <div class="feature-body">
       <ul class="ticks">
         <li>Any number of Active Directory and LDAP domains, with guided setup</li>
         <li>OpenID Connect single sign-on</li>
@@ -160,22 +231,43 @@
         <li>TOTP multi-factor sign-in, which can be required for everyone</li>
         <li>Argon2id password hashing, lockout after failed attempts, forced change on first sign-in</li>
       </ul>
+      <details class="how"><summary>How it works</summary>
+<ol>
+<li><b>Connect a directory.</b> Add an Active Directory or LDAP domain with a guided form, over LDAPS or StartTLS with the certificate checked. Add as many as you have.</li>
+<li><b>Map roles.</b> Choose which directory groups make someone an administrator, approver, auditor or user.</li>
+<li><b>Sign in.</b> A directory user who signs in for the first time gets a Vaultgate user automatically, with the role taken from their groups, again at every sign-in.</li>
+<li><b>Stay in step.</b> Every 15 minutes Vaultgate re-reads each directory: people who left are disabled and lose their live sessions, and group changes take effect.</li>
+</ol>
+<p><b>Single sign-on</b> works with any OpenID Connect provider, using the authorization code flow with PKCE, and checks the ID token's signature, issuer, audience, expiry and nonce. <b>TOTP</b> multi-factor can be required for everyone, and sensitive settings ask again for the administrator's password and code.</p>
+      </details>
+      </div>
     </div>
 
     <div class="feature" id="onboarding">
       <div><span class="tag">Onboarding</span><h2>Discovery and bulk import</h2><p class="intro">Bring hundreds of servers and accounts in at once.</p></div>
+      <div class="feature-body">
       <ul class="ticks">
-        <li>Find computers in Active Directory and add them as RDP or SSH servers</li>
+        <li>Find computers in Active Directory, or scan address ranges, and add them as RDP or SSH servers</li>
         <li>Find privileged and service accounts by group, OU, name or admin flag</li>
         <li>Discover local accounts on Windows servers</li>
         <li>CSV import of servers and accounts with a full preview; nothing is saved while any row has an error</li>
         <li>New accounts get a fresh password straight away, so nobody needs to know the current one</li>
         <li>Connection test page: port reachability and sign-in for every account, in one click</li>
       </ul>
+      <details class="how"><summary>How it works</summary>
+<ol>
+<li><b>Discover.</b> Search Active Directory for computers, by OU or operating system, and for privileged and service accounts, by group (nested groups included), OU, name or admin flag. Scan address ranges for SSH, RDP and VNC servers. Read local accounts from Windows servers.</li>
+<li><b>Or import.</b> Upload a CSV of servers and accounts. Every row is checked and shown in a preview first; nothing is saved while any row has an error.</li>
+<li><b>Take over.</b> New accounts can be given a fresh password at once, so the current one, whoever knows it, stops working.</li>
+<li><b>Test.</b> The connection test page checks every server's port and every account's sign-in in one go, and lists what needs fixing.</li>
+</ol>
+      </details>
+      </div>
     </div>
 
     <div class="feature" id="api">
       <div><span class="tag">Automation</span><h2>Credential API</h2><p class="intro">For scanners, pipelines and scripts.</p></div>
+      <div class="feature-body">
       <ul class="ticks">
         <li>Applications fetch a password over HTTPS when they need it, so rotation never breaks them</li>
         <li>Each application has its own API key (only a hash is stored) and optional expiry</li>
@@ -184,10 +276,21 @@
         <li>Every fetch and refusal audited; repeated failures block the address</li>
         <li>Control accounts are never handed out through the API</li>
       </ul>
+      <details class="how"><summary>How it works</summary>
+<ol>
+<li><b>Register.</b> An administrator adds the application, lists the addresses it calls from and the accounts or tags it may fetch, and gets an API key, shown once. Vaultgate keeps only its hash.</li>
+<li><b>Fetch.</b> The application calls <code>GET /api/v1/credential</code> over HTTPS with the key, naming the account by id, name, address or user name, at the moment it needs the password.</li>
+<li><b>Checks.</b> Source address, key, expiry, grant and rate limit are checked on every call. A mandatory reason can be required.</li>
+<li><b>Record.</b> Each fetch and each refusal is audited. Ten failures from one address in five minutes block it for the rest of that window.</li>
+</ol>
+<p>Because applications fetch the current password every time, rotation never breaks them. Control accounts and personal JIT accounts are never released through the API.</p>
+      </details>
+      </div>
     </div>
 
     <div class="feature" id="apps">
       <div><span class="tag">Applications</span><h2>Application access (RemoteApp)</h2><p class="intro">Give access to a program, not a whole desktop.</p></div>
+      <div class="feature-body">
       <ul class="ticks">
         <li>Published programs on a Windows RDS server open as one window in the browser</li>
         <li>Examples: SQL Server Management Studio, AD Users and Computers, MMC consoles, browsers</li>
@@ -195,10 +298,20 @@
         <li>One-time launch tokens and certificate-pinned HTTPS to the RDS server</li>
         <li>Recorded and monitored like any remote desktop session</li>
       </ul>
+      <details class="how"><summary>How it works</summary>
+<ol>
+<li><b>Publish.</b> On a Windows RDS server, publish the program as a RemoteApp, and install the small Vaultgate launcher if the program needs a second login.</li>
+<li><b>Describe.</b> In Vaultgate, name the application, its RDS host account and, optionally, the vaulted account to put into it, such as a SQL Server login, and how: on the command line, typed into the sign-in window, or run as that account.</li>
+<li><b>Launch.</b> The user clicks it. Vaultgate opens a RemoteApp session to the RDS host and passes a one-time token. The launcher redeems the token over HTTPS pinned to Vaultgate's certificate, receives the credential and starts the program with it.</li>
+<li><b>Watch.</b> The session is recorded and monitored like any remote desktop, with the keyword guard and file controls of its policy.</li>
+</ol>
+      </details>
+      </div>
     </div>
 
     <div class="feature" id="operations">
       <div><span class="tag">Operations</span><h2>Availability, backup and updates</h2><p class="intro">Built to run unattended.</p></div>
+      <div class="feature-body">
       <ul class="ticks">
         <li>Automatic failover: primary, warm standby and a witness, with a virtual address that moves in about 45 seconds</li>
         <li>Encrypted backups (AES-256-GCM, passphrase-protected), with or without recordings</li>
@@ -208,6 +321,16 @@
         <li>Recovery kit: emergency accounts in an encrypted file that opens offline, unlocked by a set number of recovery codes (for example 2 of 3)</li>
         <li>Appliance console for network, time, license, storage and updates</li>
       </ul>
+      <details class="how"><summary>How it works</summary>
+<ul>
+<li><b>Failover.</b> The primary renews a lease from the witness every few seconds and answers on the virtual address. If the standby hears nothing for 30 seconds and the lease has run out, it takes the lease, restores the latest copy and takes over the address, about 45 seconds in all. The old primary is marked replaced and won't serve again until it rejoins.</li>
+<li><b>Standby copy.</b> After each change the primary sends an encrypted backup to the standby. Recordings follow once a day. The pairing secret never crosses the network.</li>
+<li><b>Backups.</b> Encrypted with a passphrase you choose, with or without recordings, and restorable on a new appliance from the setup wizard.</li>
+<li><b>Updates.</b> A signed bundle is uploaded and checked before anything changes. If the new version fails to start, the appliance rolls back by itself. In a pair, the standby and witness are updated first.</li>
+<li><b>Recovery kit.</b> For the day Vaultgate itself is unreachable: chosen emergency accounts in an encrypted file that opens in any browser offline, unlocked by a set number of recovery codes held by different people.</li>
+</ul>
+      </details>
+      </div>
     </div>
 
   </div>
@@ -221,7 +344,7 @@
 </main>
 <footer class="foot">
   <div class="foot-brand"><span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l8 3v6c0 5.2-3.4 9.9-8 11-4.6-1.1-8-5.8-8-11V5z"/></svg></span><span>Vaultgate<small>Self-hosted privileged access by Cnova</small></span></div>
-  <nav aria-label="Footer"><a href="./">Overview</a> · <a href="features.html">Features</a> · <a href="workflow.html">Workflow</a> · <a href="platforms.html">Platforms</a> · <a href="security.html">Security</a> · <a href="deployment.html">Deployment</a> · <a href="faq.html">FAQ</a> · <a href="docs.html">Docs</a> · <a href="releases.html">Releases</a> · <a href="contact.html">Contact</a></nav>
+  <nav aria-label="Footer"><a href="./">Overview</a> · <a href="features.html">Features</a> · <a href="specs.html">Specs</a> · <a href="workflow.html">Workflow</a> · <a href="platforms.html">Platforms</a> · <a href="security.html">Security</a> · <a href="deployment.html">Deployment</a> · <a href="faq.html">FAQ</a> · <a href="docs.html">Docs</a> · <a href="releases.html">Releases</a> · <a href="contact.html">Contact</a></nav>
   <span class="copy">© 2026 Cnova</span>
 </footer>
 <script src="site.js?v=9830f1c2a0" defer></script>

@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Technical specifications · Vaultgate</title>
+<meta name="description" content="Vaultgate&#x27;s technical specifications: appliance, network ports, supported targets, encryption, sign-in, sessions, recording, audit, rotation, JIT accounts, the Credential API, availability and licensing.">
+<meta property="og:title" content="Technical specifications · Vaultgate">
+<meta property="og:description" content="Vaultgate&#x27;s technical specifications: appliance, network ports, supported targets, encryption, sign-in, sessions, recording, audit, rotation, JIT accounts, the Credential API, availability and licensing.">
+<meta property="og:url" content="https://cnova.in/specs.html">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://cnova.in/specs.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f766e'/%3E%3Cpath d='M16 6l8 3v6c0 5-3.4 9.3-8 11-4.6-1.7-8-6-8-11V9z' fill='white'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css?v=623082c267">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="./" aria-label="Vaultgate home"><span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l8 3v6c0 5.2-3.4 9.9-8 11-4.6-1.1-8-5.8-8-11V5z"/></svg></span><span class="brand-text">Vaultgate<small>by Cnova</small></span></a>
+  <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
+  <nav class="links" id="nav" aria-label="Pages"><a href="./">Overview</a><a href="features.html">Features</a><a href="specs.html" aria-current="page">Specs</a><a href="workflow.html">Workflow</a><a href="platforms.html">Platforms</a><a href="security.html">Security</a><a href="deployment.html">Deployment</a><a href="faq.html">FAQ</a><a href="docs.html">Docs</a><a href="releases.html">Releases</a><a class="nav-cta" href="contact.html">Request a trial</a></nav>
+  <a class="btn primary small cta-top" href="contact.html">Request a trial</a>
+</header>
+<main>
+<section class="head">
+  <div class="orb orb-a" aria-hidden="true"></div>
+  <p class="eyebrow">Specifications</p>
+  <h1>Technical specifications</h1>
+  <p class="lead">The detail your architects, auditors and procurement team will ask for, in one place. Every value here is the product's shipped default or its fixed behaviour.</p>
+  <p class="spec-actions"><a class="btn primary small" href="vaultgate-datasheet.pdf" download>Download the datasheet (PDF)</a></p>
+  <nav class="toc" aria-label="Specification areas">
+    <a href="#appliance">Appliance</a><a href="#network">Network</a><a href="#targets">Targets</a><a href="#crypto">Encryption</a>
+    <a href="#auth">Sign-in</a><a href="#sessions">Sessions</a><a href="#recording">Recording</a><a href="#audit">Audit</a>
+    <a href="#rotation">Rotation</a><a href="#jit">JIT accounts</a><a href="#api">API</a><a href="#ha">Availability</a><a href="#licensing">Licensing</a>
+  </nav>
+</section>
+
+<section class="band">
+  <div class="wrap specs">
+
+    <div class="spec-block" id="appliance">
+      <h2>Appliance</h2>
+      <div class="table-wrap"><table><tbody>
+        <tr><th>Form</th><td>Self-hosted virtual or physical appliance, installed from one ISO. No internet needed to install</td></tr>
+        <tr><th>Operating system</th><td>Debian 12, hardened: root locked, firewall drops everything not listed under Network, the server screen shows a menu console instead of a login prompt</td></tr>
+        <tr><th>Hypervisors</th><td>VMware, Microsoft Hyper-V (generation 1 and 2), Proxmox, KVM, Nutanix AHV. Guest tools included</td></tr>
+        <tr><th>Physical</th><td>Any x86-64 server, BIOS or UEFI, Secure Boot supported</td></tr>
+        <tr><th>Minimum</th><td>2 vCPU, 4 GB memory, 40 GB disk</td></tr>
+        <tr><th>Recording storage</th><td>Extra disk for recordings, sized to your session volume and retention period. Remote desktop recordings take the most space</td></tr>
+        <tr><th>Sizing</th><td>Sized with you during the trial, from your number of users, concurrent sessions and retention needs</td></tr>
+        <tr><th>Unique per install</th><td>Master key, TLS certificate, SSH host key and database are made on first start. Nothing secret is on the installer</td></tr>
+        <tr><th>Integrity</th><td>Every installed file is listed in a signed manifest, checked at start-up and daily; a mismatch is audited and restricts the appliance</td></tr>
+        <tr><th>Management</th><td>Web console for everything; the server screen offers network, host name, time, license and update tasks</td></tr>
+      </tbody></table></div>
+    </div>
+
+    <div class="spec-block" id="network">
+      <h2>Network</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Port</th><th>Direction</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">443/tcp</td><td>Inbound</td><td>Web console, browser sessions, Credential API, appliance-to-appliance traffic for standby and failover</td></tr>
+          <tr><td class="mono">2200/tcp</td><td>Inbound</td><td>SSH gateway for native <code>ssh</code>, <code>scp</code>, <code>sftp</code> and <code>rsync</code></td></tr>
+          <tr><td class="mono">22/tcp</td><td>Outbound</td><td>SSH servers and network devices</td></tr>
+          <tr><td class="mono">3389/tcp</td><td>Outbound</td><td>RDP servers and RDS RemoteApp hosts</td></tr>
+          <tr><td class="mono">5900/tcp</td><td>Outbound</td><td>VNC servers</td></tr>
+          <tr><td class="mono">445/tcp</td><td>Outbound</td><td>Windows local accounts (rotation, discovery, JIT accounts)</td></tr>
+          <tr><td class="mono">636/tcp</td><td>Outbound</td><td>Active Directory and LDAP over TLS (389 with StartTLS also supported)</td></tr>
+          <tr><td class="mono">1433, 1521, 3306, 5432, …</td><td>Outbound</td><td>Databases, on each one's own port</td></tr>
+          <tr><td class="mono">443/tcp</td><td>Outbound</td><td>OpenID Connect provider; license check-in once a day (not needed with offline activation)</td></tr>
+        </tbody>
+      </table></div>
+      <p class="note">The remote desktop engine listens on the appliance's loopback interface only. Every other inbound port is closed.</p>
+    </div>
+
+    <div class="spec-block" id="targets">
+      <h2>Supported targets</h2>
+      <div class="table-wrap"><table><tbody>
+        <tr><th>Sessions</th><td>SSH, RDP, VNC; SFTP, SCP and rsync through the SSH gateway; Windows RDS RemoteApp programs</td></tr>
+        <tr><th>Servers</th><td>Linux and Unix over SSH; Windows local accounts over SMB; Windows domain accounts in Active Directory over LDAPS</td></tr>
+        <tr><th>Databases</th><td>Microsoft SQL Server, Oracle Database, MySQL, MariaDB, PostgreSQL, MongoDB, Redis and Valkey, Apache Cassandra, SAP HANA</td></tr>
+        <tr><th>Network and security</th><td>Cisco IOS and IOS-XE, Fortinet FortiGate</td></tr>
+        <tr><th>Anything else over SSH</th><td>Custom platforms: rotation written as send-and-expect steps, without waiting for a release</td></tr>
+        <tr><th>Applications</th><td>Any program published on a Windows RDS server, optionally signed in with a second vaulted account</td></tr>
+      </tbody></table></div>
+      <p class="note"><a href="platforms.html">Supported systems</a> lists how each platform's password is changed, and what is planned.</p>
+    </div>
+
+    <div class="spec-block" id="crypto">
+      <h2>Encryption and keys</h2>
+      <div class="table-wrap"><table><tbody>
+        <tr><th>Stored secrets</th><td>AES-256-GCM envelope encryption: a fresh data key per secret, wrapped by the appliance master key. Each ciphertext is bound to its record as associated data</td></tr>
+        <tr><th>Secret history</th><td>Every version kept, encrypted the same way, with who changed it and when</td></tr>
+        <tr><th>Keystroke logs</th><td>Encrypted with a key derived from the vault</td></tr>
+        <tr><th>Backups</th><td>AES-256-GCM in authenticated chunks; key from your passphrase with scrypt (N=2<sup>17</sup>, r=8, p=1). The passphrase is never stored</td></tr>
+        <tr><th>Encrypted recording downloads</th><td>AES-256-GCM. Key from HKDF-SHA256 over a PBKDF2-SHA256 passphrase key (600,000 rounds) and a part held only by the appliance that made the file</td></tr>
+        <tr><th>Audit trail</th><td>Each event chained to the one before with HMAC-SHA256</td></tr>
+        <tr><th>Recordings</th><td>SHA-256 of each recording sealed into the audit trail; checked on every replay and before compression replaces the original</td></tr>
+        <tr><th>User passwords</th><td>Argon2id</td></tr>
+        <tr><th>API keys</th><td>Only a hash is stored; the key is shown once</td></tr>
+        <tr><th>Updates and licenses</th><td>Ed25519 signatures, checked before anything is installed or accepted</td></tr>
+        <tr><th>In transit</th><td>HTTPS to the console; SSH to targets with host keys pinned on first use; RDP with certificate validation on by default; LDAPS or StartTLS with certificate checks</td></tr>
+      </tbody></table></div>
+    </div>
+
+    <div class="spec-block" id="auth">
+      <h2>Sign-in and identity</h2>
+      <div class="table-wrap"><table><tbody>
+        <tr><th>Sources</th><td>Local users; any number of Active Directory and LDAP domains; OpenID Connect providers (authorization code with PKCE)</td></tr>
+        <tr><th>Multi-factor</th><td>TOTP authenticator apps. On by default for the first administrator; can be required for everyone</td></tr>
+        <tr><th>Directory users</th><td>Created on first sign-in; role from directory groups at every sign-in; groups usable directly in policies</td></tr>
+        <tr><th>Directory sync</th><td>Every 15 minutes: leavers disabled, group changes followed, sessions no longer allowed are ended</td></tr>
+        <tr><th>Roles</th><td>Administrator, approver, auditor, user</td></tr>
+        <tr><th>Console session</th><td>Ends after 30 minutes idle, and after 12 hours however active</td></tr>
+        <tr><th>Lockout</th><td>5 failed attempts lock the account for 15 minutes</td></tr>
+        <tr><th>Local passwords</th><td>At least 12 characters; changed at first sign-in</td></tr>
+        <tr><th>Sensitive settings</th><td>Changing downloads, retention and similar settings asks again for the administrator's password and MFA code</td></tr>
+      </tbody></table></div>
+    </div>
+
+    <div class="spec-block" id="sessions">
+      <h2>Brokered sessions</h2>
+      <div class="table-wrap"><table><tbody>
+        <tr><th>Clients</th><td>Any modern browser (nothing to install); native SSH clients through the gateway</td></tr>
+        <tr><th>Credential handling</th><td>Injected by the gateway; never sent to the user's browser or computer</td></tr>
+        <tr><th>Session start</th><td>Single-use ticket valid for 30 seconds; the policy is checked again at connection</td></tr>
+        <tr><th>Idle timeout</th><td>15 minutes without input</td></tr>
+        <tr><th>Maximum length</th><td>Set per policy</td></tr>
+        <tr><th>Command control</th><td>Regular-expression blocklists per policy for Linux shells and Windows cmd and PowerShell over SSH, chained commands included</td></tr>
+        <tr><th>Keyword guard</th><td>Blocked words typed in RDP, VNC and application sessions warn or end the session, per policy</td></tr>
+        <tr><th>Clipboard</th><td>Allowed or blocked per policy</td></tr>
+        <tr><th>File transfer</th><td>Upload and download as separate rights, off by default. Blocked types checked by file contents; blocked words checked inside text, Office and zip files; up to 2 GB per session upload</td></tr>
+        <tr><th>Printing</th><td>Disabled in remote desktops</td></tr>
+        <tr><th>Monitoring</th><td>Live read-only view and immediate termination, by administrators and auditors</td></tr>
+      </tbody></table></div>
+    </div>
+
+    <div class="spec-block" id="recording">
+      <h2>Recording</h2>
+      <div class="table-wrap"><table><tbody>
+        <tr><th>What's recorded</th><td>SSH, RDP, VNC and application sessions, by default. Switch off per server, for example test and UAT systems</td></tr>
+        <tr><th>Formats</th><td>SSH in asciicast v2 text; remote desktops in the graphical session protocol. Both replay in the browser with seeking</td></tr>
+        <tr><th>Indexing</th><td>Commands and typed lines searchable across all recordings</td></tr>
+        <tr><th>Kept out</th><td>Passwords typed by Vaultgate, and the contents of transferred files</td></tr>
+        <tr><th>Compression</th><td>gzip, replacing the original only once the compressed copy has been checked against the sealed hash</td></tr>
+        <tr><th>Retention</th><td>Off until an administrator sets a period; a preview shows what would be deleted</td></tr>
+        <tr><th>Disk protection</th><td>Alerts as space runs low; new sessions refused before the disk fills, never run unrecorded</td></tr>
+        <tr><th>Downloads</th><td>One setting: off, plain evidence package, or encrypted (default). Encrypted files open only on the appliance that made it, or its standby or restored copy, with each opening audited</td></tr>
+      </tbody></table></div>
+    </div>
+
+    <div class="spec-block" id="audit">
+      <h2>Audit and reporting</h2>
+      <div class="table-wrap"><table><tbody>
+        <tr><th>Events</th><td>Every sign-in, policy decision, request, approval, credential reveal and fetch, session, rotation, file transfer and configuration change</td></tr>
+        <tr><th>Tamper evidence</th><td>HMAC-SHA256 chain with a one-click integrity check</td></tr>
+        <tr><th>Views</th><td>Sign-ins, sessions, credentials, access, identity, configuration; session activity per command</td></tr>
+        <tr><th>Exports</th><td>CSV of every view; PDF management report with charts and findings</td></tr>
+      </tbody></table></div>
+    </div>
+
+    <div class="spec-block" id="rotation">
+      <h2>Password rotation</h2>
+      <div class="table-wrap"><table><tbody>
+        <tr><th>Schedule</th><td>Every N days, after each use, on demand, or any mix, through named rotation policies</td></tr>
+        <tr><th>Generated passwords</th><td>12 to 128 characters (24 by default), symbols on or off, characters to avoid</td></tr>
+        <tr><th>Methods</th><td>By the account itself, or through a control account for accounts whose password nobody knows</td></tr>
+        <tr><th>Checking</th><td>Every new password is tried with a real sign-in; a failure is flagged as unverified with the reason</td></tr>
+        <tr><th>Lockout safety</th><td>If a target rejects the current password, automatic rotation of that account pauses instead of retrying</td></tr>
+        <tr><th>Scheduler</th><td>Checks for due accounts every minute</td></tr>
+      </tbody></table></div>
+    </div>
+
+    <div class="spec-block" id="jit">
+      <h2>Personal JIT accounts</h2>
+      <div class="table-wrap"><table><tbody>
+        <tr><th>Where</th><td>Linux and Unix servers, Windows servers (local accounts), Active Directory (domain accounts allowed only on the covered servers), SQL Server, Oracle, MySQL, MariaDB and PostgreSQL</td></tr>
+        <tr><th>Lifecycle</th><td>Created at the user's first connection, with the groups or roles in the policy; removed 10 minutes after the last session ends or when access is withdrawn; failed removals retried every 5 minutes</td></tr>
+        <tr><th>Password</th><td>Random, held in the vault, never shown to the user</td></tr>
+        <tr><th>Tracking</th><td>Every creation and removal audited; accounts marked as Vaultgate JIT accounts on the target; an administrator page lists them all</td></tr>
+      </tbody></table></div>
+    </div>
+
+    <div class="spec-block" id="api">
+      <h2>Credential API</h2>
+      <div class="table-wrap"><table><tbody>
+        <tr><th>Endpoints</th><td><code>GET /api/v1/credential</code> (one account by id, name, address, user name or tag) and <code>GET /api/v1/accounts</code> (what the key may fetch)</td></tr>
+        <tr><th>Authentication</th><td><code>Authorization: Bearer</code> API key, one per application, optional expiry up to 10 years</td></tr>
+        <tr><th>Restrictions</th><td>Allowed source addresses; exact accounts or tags; optional mandatory reason</td></tr>
+        <tr><th>Rate limit</th><td>Per application, 120 requests a minute by default, up to 6,000</td></tr>
+        <tr><th>Abuse protection</th><td>10 failed requests from one address within 5 minutes block it for the rest of that window</td></tr>
+        <tr><th>Never released</th><td>Control accounts and personal JIT accounts</td></tr>
+      </tbody></table></div>
+    </div>
+
+    <div class="spec-block" id="ha">
+      <h2>Availability, backup and updates</h2>
+      <div class="table-wrap"><table><tbody>
+        <tr><th>Failover</th><td>Primary, warm standby and a small witness appliance. A virtual address moves to the standby about 45 seconds after the primary fails</td></tr>
+        <tr><th>Split-brain protection</th><td>The witness grants one lease at a time; a replaced primary never serves again until it rejoins; a primary cut off from both others stops rotating passwords</td></tr>
+        <tr><th>Standby copy</th><td>Encrypted backup sent after each change; recordings copied daily</td></tr>
+        <tr><th>Backups</th><td>Encrypted, with or without recordings; restored onto a new appliance from the setup wizard</td></tr>
+        <tr><th>Recovery kit</th><td>Emergency accounts in an encrypted file that opens offline, unlocked by a set number of recovery codes (for example 2 of 3)</td></tr>
+        <tr><th>Updates</th><td>Signed bundles, checked before install, rolled back automatically on failure. A pair updates the standby and witness first. Security fixes install regardless of support dates</td></tr>
+      </tbody></table></div>
+    </div>
+
+    <div class="spec-block" id="licensing">
+      <h2>Licensing</h2>
+      <div class="table-wrap"><table><tbody>
+        <tr><th>Trial</th><td>30 days on every new install, all features</td></tr>
+        <tr><th>Online activation</th><td>Daily check-in over HTTPS; keeps working 30 days without contact</td></tr>
+        <tr><th>Offline activation</th><td>Request file out, signed license file in, for isolated networks</td></tr>
+        <tr><th>Updates entitlement</th><td>Releases made during the support period install; security fixes always do</td></tr>
+      </tbody></table></div>
+    </div>
+
+  </div>
+</section>
+
+<section class="closing">
+  <h2>Missing a detail you need?</h2>
+  <p>Send us your evaluation checklist and we'll answer every line.</p>
+  <a class="btn primary" href="contact.html">Contact us</a>
+</section>
+</main>
+<footer class="foot">
+  <div class="foot-brand"><span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l8 3v6c0 5.2-3.4 9.9-8 11-4.6-1.1-8-5.8-8-11V5z"/></svg></span><span>Vaultgate<small>Self-hosted privileged access by Cnova</small></span></div>
+  <nav aria-label="Footer"><a href="./">Overview</a> · <a href="features.html">Features</a> · <a href="specs.html">Specs</a> · <a href="workflow.html">Workflow</a> · <a href="platforms.html">Platforms</a> · <a href="security.html">Security</a> · <a href="deployment.html">Deployment</a> · <a href="faq.html">FAQ</a> · <a href="docs.html">Docs</a> · <a href="releases.html">Releases</a> · <a href="contact.html">Contact</a></nav>
+  <span class="copy">© 2026 Cnova</span>
+</footer>
+<script src="site.js?v=9830f1c2a0" defer></script>
+</body>
+</html>
