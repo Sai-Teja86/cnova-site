@@ -34,14 +34,14 @@
     <div class="rel-current">
       <div>
         <p class="rel-tag">Current release</p>
-        <h2>Vaultgate 0.1.0-51</h2>
+        <h2>Vaultgate 0.1.0-52</h2>
         <p class="sub">Released 27 November 2026. Install it from the Updates page of the appliance console. Failover pairs still on 0.1.0-29 or older: update the standby first, then the primary.</p>
       </div>
       <dl class="rel-files">
-        <dt>Installer</dt><dd><code>vaultgate-0.1.0-51-amd64.iso</code> · 438 MB</dd>
-        <dt>SHA-256</dt><dd><code class="hash">6a1f2af5c920d65b93c728d15c87299f1aa5ddf0b47e126ab9da51d492824ead</code></dd>
-        <dt>Update</dt><dd><code>vaultgate-0.1.0-51.vgupdate</code> · 49 MB</dd>
-        <dt>SHA-256</dt><dd><code class="hash">dbd2a4933f872cd90dc10c2019949c4ba914c3860dcf3092c8a0f4318755af9c</code></dd>
+        <dt>Installer</dt><dd><code>vaultgate-0.1.0-52-amd64.iso</code> · 438 MB</dd>
+        <dt>SHA-256</dt><dd><code class="hash">5164f4bb4c6a37b69b70acc14a534296aaae02851f6be5706fc1b45fdefbdc4d</code></dd>
+        <dt>Update</dt><dd><code>vaultgate-0.1.0-52.vgupdate</code> · 49 MB</dd>
+        <dt>SHA-256</dt><dd><code class="hash">0617817a1ebd4f0ec7f79f50aef168998f929e86e3966f74949ad60eb00517a6</code></dd>
       </dl>
     </div>
   </div>
@@ -63,6 +63,13 @@
   <div class="wrap">
     <h2>Release history</h2>
     <div class="rel-list">
+
+      <article class="rel"><header><h3>0.1.0-52</h3><time datetime="2026-11-27">27 Nov 2026</time><span class="pill ok">New</span></header>
+        <ul>
+          <li><b>Clocks of paired appliances.</b> Requests between a primary, its standby and the witness are refused when their clocks differ by more than 5 minutes. The refusal now says which clock is off and by how much, and the Standby page shows each appliance's clock against this one, warning before the limit.</li>
+          <li><b>Set the date and time at the text console</b>, for a standby or witness on a network with no NTP server.</li>
+          <li>The Time page shows times in your own time zone as well as UTC.</li>
+        </ul></article>
 
       <article class="rel"><header><h3>0.1.0-51</h3><time datetime="2026-11-27">27 Nov 2026</time><span class="pill ok">New</span></header>
         <ul>

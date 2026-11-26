@@ -351,7 +351,8 @@ sftp -P 2200 alice+root@web-01@vaultgate</code></pre>
           <li>Enter up to 8 servers and save; <b>Use NIC and NPL servers</b> fills in <code>samay1.nic.in</code>, <code>samay2.nic.in</code> and <code>time.nplindia.org</code>. Check CERT-In's current list, and that the appliance can reach UDP port 123. Empty means Debian's public pool.</li>
           <li>The server's text console (<b>Time zone and NTP</b>) sets the same servers, and the time zone. Audit times are stored in UTC and shown in your browser's time.</li>
           <li>If the clock loses sync, or drifts more than a second, an audit event and an email alert say so, and the consoles show a warning.</li>
-          <li>No time server reachable, as on an isolated network? While the clock isn't synchronised, the Time page offers <b>Set the clock from this computer</b>: it shows this computer's time beside the appliance's, and sets the appliance to it, to within about a second. It asks for your password again and is recorded in the audit log. A time server, once one answers, takes over again.</li>
+          <li>A primary, its standby and the witness refuse each other's requests when their clocks differ by more than 5 minutes. The <b>Standby</b> page shows each one's clock against the primary's; point all of them at the same NTP server.</li>
+          <li>No time server reachable, as on an isolated network? On a standby or witness, use <b>Set the date and time by hand</b> on its text console. While the clock isn't synchronised, the Time page offers <b>Set the clock from this computer</b>: it shows this computer's time beside the appliance's, and sets the appliance to it, to within about a second. It asks for your password again and is recorded in the audit log. A time server, once one answers, takes over again.</li>
         </ul></article>
 
       <article id="nettools"><h3>Network tools</h3>
